@@ -21226,7 +21226,10 @@ var app = (0,vue_dist_vue_esm_bundler__WEBPACK_IMPORTED_MODULE_0__.createApp)({
       value: document.location.toString(),
       tag: 'img',
       options: {
-        width: 1024
+        width: 1024,
+        color: {
+          light: '#0000'
+        }
       }
     };
   },

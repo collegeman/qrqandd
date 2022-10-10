@@ -8,6 +8,9 @@ const app = createApp({
       tag: 'img',
       options: {
         width: 1024,
+        color: {
+          light: '#0000',
+        }
       }
     }
   },
