@@ -21223,7 +21223,7 @@ __webpack_require__.r(__webpack_exports__);
 var app = (0,vue_dist_vue_esm_bundler__WEBPACK_IMPORTED_MODULE_0__.createApp)({
   data: function data() {
     return {
-      value: null,
+      value: document.location.toString(),
       tag: 'img',
       options: {
         width: 1024

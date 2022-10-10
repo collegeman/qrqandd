@@ -4,7 +4,7 @@ import VueQrcode from '@chenfengyuan/vue-qrcode';
 const app = createApp({
   data () {
     return {
-      value: null,
+      value: document.location.toString(),
       tag: 'img',
       options: {
         width: 1024,
