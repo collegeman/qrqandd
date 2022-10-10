@@ -6,10 +6,20 @@ const app = createApp({
     return {
       value: document.location.toString(),
       tag: 'img',
-      options: {
-        width: 1024,
+      width: 1024,
+      color: {
+        dark: '000',
+        light: '0000',
+      }
+    }
+  },
+  computed: {
+    options () {
+      return {
+        width: this.width,
         color: {
-          light: '#0000',
+          dark: '#' + this.color.dark,
+          light: '#' + this.color.light,
         }
       }
     }

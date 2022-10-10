@@ -21225,13 +21225,23 @@ var app = (0,vue_dist_vue_esm_bundler__WEBPACK_IMPORTED_MODULE_0__.createApp)({
     return {
       value: document.location.toString(),
       tag: 'img',
-      options: {
-        width: 1024,
-        color: {
-          light: '#0000'
-        }
+      width: 1024,
+      color: {
+        dark: '000',
+        light: '0000'
       }
     };
+  },
+  computed: {
+    options: function options() {
+      return {
+        width: this.width,
+        color: {
+          dark: '#' + this.color.dark,
+          light: '#' + this.color.light
+        }
+      };
+    }
   },
   methods: {
     download: function download() {
