@@ -21224,11 +21224,38 @@ var app = (0,vue_dist_vue_esm_bundler__WEBPACK_IMPORTED_MODULE_0__.createApp)({
   data: function data() {
     return {
       value: null,
-      tag: 'canvas',
+      tag: 'img',
       options: {
         width: 1024
       }
     };
+  },
+  methods: {
+    download: function download() {
+      var element = document.createElement("a");
+      if ('svg' === this.tag) {
+        var svg = document.querySelector('#qrcode svg').outerHTML;
+        var blob = new Blob([svg.toString()]);
+        element.download = "qrcode.svg";
+        element.href = window.URL.createObjectURL(blob);
+      } else if ('img' === this.tag) {
+        var img = document.querySelector('#qrcode img');
+        var byteString = atob(img.src.split(',')[1]);
+        var mimeString = img.src.split(',')[0].split(':')[1].split(';')[0];
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        var _blob = new Blob([ab], {
+          type: mimeString
+        });
+        element.download = "qrcode.png";
+        element.href = window.URL.createObjectURL(_blob);
+      }
+      element.click();
+      element.remove();
+    }
   }
 });
 app.component(_chenfengyuan_vue_qrcode__WEBPACK_IMPORTED_MODULE_1__["default"].name, _chenfengyuan_vue_qrcode__WEBPACK_IMPORTED_MODULE_1__["default"]);

@@ -16,7 +16,10 @@
     <meta property="og:type" content="">
     -->
     <style>
-      #qrcode canvas {
+      #qrcode canvas,
+      #qrcode svg,
+      #qrcode img {
+        display: block;
         max-width: 100% !important;
         height: auto !important;
       }
@@ -34,8 +37,15 @@
               <div class="form-group">
                 <div id="qrcode" class="d-flex justify-content-center">
                   <vue-qrcode
+                    v-if="'svg' === tag"
                     :value="value"
-                    :tag="tag"
+                    tag="svg"
+                    :options="options"
+                  ></vue-qrcode>
+                  <vue-qrcode
+                    v-if="'img' === tag"
+                    :value="value"
+                    tag="img"
                     :options="options"
                   ></vue-qrcode>
                 </div>
@@ -51,6 +61,25 @@
                   v-model="value"
                 >
               </div>
+              <div class="form-group">
+                <label for="tag">
+                  Image Type
+                </label>
+                <select
+                  id="tag"
+                  v-model="tag"
+                  class="form-control"
+                >
+                  <option value="img">PNG</option>
+                  <option value="svg">SVG</option>
+                </select>
+              </div>
+              <button
+                class="btn btn-block btn-dark"
+                @click.prevent="download()"
+              >
+                Download
+              </button>
             </div>
           </form>
         </div>

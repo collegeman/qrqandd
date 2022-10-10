@@ -1,7 +1,7 @@
 {
   "name": "@collegeman/qrqandd",
-  "version": "1.0.0",
-  "description": "Generate strong passwords",
+  "version": "1.0.1",
+  "description": "Quick & Dirty client-side QR code generator with a Vue front-end",
   "main": "dist/qrqandd.js",
   "repository": {
     "type": "git",
