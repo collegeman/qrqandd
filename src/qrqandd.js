@@ -1,5 +1,5 @@
 import { createApp } from 'vue/dist/vue.esm-bundler';
-import VueQrcode from '@chenfengyuan/vue-qrcode';
+import QuickQr from "./QuickQr";
 
 const app = createApp({
   data () {
@@ -53,6 +53,8 @@ const app = createApp({
   }
 })
 
-app.component(VueQrcode.name, VueQrcode)
+//app.component(VueQrcode.name, VueQrcode)
+app.component('QuickQr', QuickQr)
+//app.component('ColourPicker', ColourPicker)
 
 app.mount('#app');
