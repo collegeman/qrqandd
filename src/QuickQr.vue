@@ -180,7 +180,7 @@
             v-model="hasImage"
             class="form-control"
           >
-            <option value="0">Image</option>
+            <option value="0">None</option>
             <option value="1">A URL to an Image</option>
           </select>
         </div>
