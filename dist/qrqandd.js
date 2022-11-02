@@ -5539,18 +5539,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     value: {
-      type: String,
+      type: Object,
       required: true
     },
     width: {
       type: Number,
       "default": 1024
     },
-    type: {
-      "default": 'url',
-      validator: function validator(value) {
-        return ['vcard', 'url'].includes(value);
-      }
+    image: {
+      type: String
     },
     tag: {
       type: String,
@@ -5590,7 +5587,8 @@ __webpack_require__.r(__webpack_exports__);
         hex: '#000'
       },
       canvasRefreshToken: Math.random(),
-      showDownloadButton: true
+      showDownloadButton: true,
+      normalizedValue: {}
     };
   },
   components: {
@@ -5599,8 +5597,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     qRCodeData: function qRCodeData() {
-      if (this.type === 'url') {
-        return this.value;
+      if (this.normalizedValue.type === 'url') {
+        return this.normalizedValue.url;
       } else {
         return this.generateVCardData();
       }
@@ -5632,6 +5630,19 @@ __webpack_require__.r(__webpack_exports__);
       this.hasBgColor = 1;
     }
     this.bColor.hex = this.backgroundColor;
+    this.normalizedValue = this.value;
+    if (this.image) {
+      this.imageUrl = this.image;
+      this.hasImage = '1';
+    }
+  },
+  updated: function updated() {
+    var _this = this;
+    if (this.tag === 'canvas' && this.imageUrl) {
+      setTimeout(function () {
+        _this.onReady();
+      }, 100);
+    }
   },
   watch: {
     imageUrl: function imageUrl(newURL, oldURL) {
@@ -5652,7 +5663,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     generateQRCode: function generateQRCode() {
-      if (this.type === 'url') {
+      if (this.normalizedValue.type === 'url') {
         this.value = url;
       } else {
         this.value = this.generateVCardData;
@@ -5691,9 +5702,10 @@ __webpack_require__.r(__webpack_exports__);
     refreshTokenForCanvas: function refreshTokenForCanvas() {
       this.canvasRefreshToken = Math.random();
     },
-    onReady: function onReady(canvas) {
-      var _this = this;
+    onReady: function onReady() {
+      var _this2 = this;
       if (!this.imageUrl) return;
+      var canvas = document.getElementById('canvas-qr-code');
       var context = canvas.getContext('2d');
       var image = new Image();
       image.crossOrigin = 'Anonymous';
@@ -5702,7 +5714,7 @@ __webpack_require__.r(__webpack_exports__);
         var coverage = 0.15;
         var width = Math.round(canvas.width * coverage);
         var x = (canvas.width - width) / 2;
-        _this.drawImage(context, image, x, x, width, width);
+        _this2.drawImage(context, image, x, x, width, width);
       };
     },
     drawImage: function drawImage(context, image, x, y, width, height) {
@@ -5796,8 +5808,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.type,
-      expression: "type"
+      value: _vm.normalizedValue.type,
+      expression: "normalizedValue.type"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5811,7 +5823,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.type = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+        _vm.$set(_vm.normalizedValue, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -5822,7 +5834,7 @@ var render = function render() {
     attrs: {
       value: "vcard"
     }
-  }, [_vm._v("VCard")])])]), _vm._v(" "), _vm.type === "url" ? _c("div", {
+  }, [_vm._v("VCard")])])]), _vm._v(" "), _vm.normalizedValue.type === "url" ? _c("div", {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
@@ -5832,8 +5844,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.value,
-      expression: "value"
+      value: _vm.normalizedValue.url,
+      expression: "normalizedValue.url"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5841,15 +5853,15 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.value
+      value: _vm.normalizedValue.url
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.value = $event.target.value;
+        _vm.$set(_vm.normalizedValue, "url", $event.target.value);
       }
     }
-  })]) : _vm._e(), _vm._v(" "), _vm.type === "vcard" ? _c("div", [_c("div", {
+  })]) : _vm._e(), _vm._v(" "), _vm.normalizedValue.type === "vcard" ? _c("div", [_c("div", {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
@@ -18440,6 +18452,22 @@ var appConfig = {
   el: '#app',
   components: {
     QuickQr: _QuickQr__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      value: {
+        type: 'url',
+        url: document.location.href,
+        name: 'Seth Atam',
+        company: 'c21 redwood',
+        title: 'Web Developer',
+        email: 'sethatam@c21redwood.com',
+        phone: '(123) 456 1234'
+      },
+      image: 'https://picsum.photos/200/300',
+      backgroundImage: '#0000',
+      foregroundImage: '#000'
+    };
   }
 };
 new vue__WEBPACK_IMPORTED_MODULE_1__["default"](appConfig);

@@ -36,25 +36,25 @@
           </label>
           <select
               id="type"
-              v-model="type"
+              v-model="normalizedValue.type"
               class="form-control"
           >
             <option value="url">URL</option>
             <option value="vcard">VCard</option>
           </select>
         </div>
-        <div v-if="type === 'url'" class="form-group">
+        <div v-if="normalizedValue.type === 'url'" class="form-group">
           <label for="value">
             QR Code Value
           </label>
           <input
               id="value"
-              v-model="value"
+              v-model="normalizedValue.url"
               class="form-control"
               type="text"
           >
         </div>
-        <div v-if="type === 'vcard'">
+        <div v-if="normalizedValue.type === 'vcard'">
           <div class="form-group">
             <label for="name">
               Name
@@ -196,7 +196,6 @@
           </div>
         </div>
       </div>
-
       <button
           v-if="showDownloadButton"
           class="btn btn-block btn-dark"
@@ -215,18 +214,15 @@ import VueQrcode from '@chenfengyuan/vue-qrcode'
 export default {
   props: {
     value: {
-      type: String,
+      type: Object,
       required: true
     },
     width: {
       type: Number,
       default: 1024
     },
-    type: {
-      default: 'url',
-      validator(value) {
-        return ['vcard', 'url'].includes(value)
-      }
+    image: {
+      type: String,
     },
     tag: {
       type: String,
@@ -267,6 +263,7 @@ export default {
       },
       canvasRefreshToken: Math.random(),
       showDownloadButton: true,
+      normalizedValue: {}
     }
   },
   components: {
@@ -276,8 +273,8 @@ export default {
 
   computed: {
     qRCodeData() {
-      if (this.type === 'url') {
-        return this.value
+      if (this.normalizedValue.type === 'url') {
+        return this.normalizedValue.url
       } else {
         return this.generateVCardData()
       }
@@ -298,25 +295,42 @@ export default {
     fgColor() {
       if (this.hasFgColor) return this.foregroundColor;
       return '#000';
-    },
+    }
   },
 
   mounted() {
     if (this.foregroundColor !== '#000') {
       this.hasFgColor = 1;
     }
+
     this.fColor.hex = this.foregroundColor
 
     if (this.backgroundColor !== '#0000') {
       this.hasBgColor = 1;
     }
     this.bColor.hex = this.backgroundColor
+    this.normalizedValue = this.value
+
+    if (this.image) {
+      this.imageUrl = this.image
+      this.hasImage = '1';
+    }
+
+  },
+
+  updated() {
+    if (this.tag === 'canvas' && this.imageUrl) {
+      setTimeout(() => {
+        this.onReady()
+      }, 100)
+    }
   },
 
   watch: {
     imageUrl(newURL, oldURL) {
       if (newURL && this.tag === 'canvas') {
         this.refreshTokenForCanvas()
+
       }
     },
     hasBgColor(value) {
@@ -330,14 +344,16 @@ export default {
       }
     },
   },
+
   methods: {
     generateQRCode() {
-      if (this.type === 'url') {
+      if (this.normalizedValue.type === 'url') {
         this.value = url
       } else {
         this.value = this.generateVCardData
       }
     },
+
     download() {
       const element = document.createElement("a");
       if ('svg' === this.tag) {
@@ -372,8 +388,9 @@ export default {
       this.canvasRefreshToken = Math.random()
     },
 
-    onReady(canvas) {
+    onReady() {
       if (!this.imageUrl) return;
+      let canvas = document.getElementById('canvas-qr-code')
       const context = canvas.getContext('2d');
       const image = new Image();
       image.crossOrigin = 'Anonymous';
