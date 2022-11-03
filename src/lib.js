@@ -1,3 +1,3 @@
 import QuickQr from './QuickQr'
 
-export { QuickQr }
+export default QuickQr

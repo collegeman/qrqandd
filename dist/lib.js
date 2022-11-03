@@ -6536,11 +6536,11 @@ var __webpack_exports__ = {};
   \********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "QuickQr": () => (/* reexport safe */ _QuickQr__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _QuickQr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuickQr */ "./src/QuickQr.vue");
 
-
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_QuickQr__WEBPACK_IMPORTED_MODULE_0__["default"]);
 })();
 
 /******/ })()
