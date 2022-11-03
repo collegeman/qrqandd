@@ -18456,9 +18456,9 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
-/*!************************!*\
-  !*** ./src/qrqandd.js ***!
-  \************************/
+/*!*********************!*\
+  !*** ./src/demo.js ***!
+  \*********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _QuickQr__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./QuickQr */ "./src/QuickQr.vue");
