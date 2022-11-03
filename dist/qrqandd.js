@@ -5739,7 +5739,7 @@ __webpack_require__.r(__webpack_exports__);
       context.drawImage(image, x, x, width, height);
     },
     generateVCardData: function generateVCardData() {
-      return "BEGIN:VCARD\n" + "VERSION:4.0\n" + "N:" + this.vcard.name + "\n" + "FN:" + this.vcard.name + "\n" + "EMAIL:" + this.vcard.email + "\n" + "ORG:" + this.vcard.company + "\n" + "TITLE:" + this.vcard.job_title + "\n" + "URL:" + "https://" + this.vcard.website + "\n" + "TEL:" + this.vcard.phone + "\n" + "END:VCARD";
+      return "BEGIN:VCARD\n" + "VERSION:4.0\n" + "N:" + this.normalizedValue.name + "\n" + "FN:" + this.normalizedValue.name + "\n" + "EMAIL:" + this.normalizedValue.email + "\n" + "ORG:" + this.normalizedValue.company + "\n" + "TITLE:" + this.normalizedValue.job_title + "\n" + "URL:" + this.normalizedValue.website + "\n" + "TEL:" + this.normalizedValue.phone + "\n" + "END:VCARD";
     }
   }
 });
@@ -5871,8 +5871,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.name,
-      expression: "vcard.name"
+      value: _vm.normalizedValue.name,
+      expression: "normalizedValue.name"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5880,12 +5880,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.name
+      value: _vm.normalizedValue.name
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "name", $event.target.value);
+        _vm.$set(_vm.normalizedValue, "name", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5898,8 +5898,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.email,
-      expression: "vcard.email"
+      value: _vm.normalizedValue.email,
+      expression: "normalizedValue.email"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5907,12 +5907,12 @@ var render = function render() {
       type: "email"
     },
     domProps: {
-      value: _vm.vcard.email
+      value: _vm.normalizedValue.email
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "email", $event.target.value);
+        _vm.$set(_vm.normalizedValue, "email", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5925,8 +5925,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.phone,
-      expression: "vcard.phone"
+      value: _vm.normalizedValue.phone,
+      expression: "normalizedValue.phone"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5934,12 +5934,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.phone
+      value: _vm.normalizedValue.phone
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "phone", $event.target.value);
+        _vm.$set(_vm.normalizedValue, "phone", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5952,8 +5952,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.website,
-      expression: "vcard.website"
+      value: _vm.normalizedValue.website,
+      expression: "normalizedValue.website"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5961,12 +5961,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.website
+      value: _vm.normalizedValue.website
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "website", $event.target.value);
+        _vm.$set(_vm.normalizedValue, "website", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5979,8 +5979,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.job_title,
-      expression: "vcard.job_title"
+      value: _vm.normalizedValue.job_title,
+      expression: "normalizedValue.job_title"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5988,12 +5988,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.job_title
+      value: _vm.normalizedValue.job_title
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "job_title", $event.target.value);
+        _vm.$set(_vm.normalizedValue, "job_title", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -6006,8 +6006,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.company,
-      expression: "vcard.company"
+      value: _vm.normalizedValue.company,
+      expression: "normalizedValue.company"
     }],
     staticClass: "form-control",
     attrs: {
@@ -6015,12 +6015,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.company
+      value: _vm.normalizedValue.company
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "company", $event.target.value);
+        _vm.$set(_vm.normalizedValue, "company", $event.target.value);
       }
     }
   })])]) : _vm._e(), _vm._v(" "), _c("div", {
@@ -18457,12 +18457,7 @@ var appConfig = {
     return {
       value: {
         type: 'url',
-        url: document.location.href,
-        name: 'Seth Atam',
-        company: 'c21 redwood',
-        title: 'Web Developer',
-        email: 'sethatam@c21redwood.com',
-        phone: '(123) 456 1234'
+        url: document.location.href
       },
       image: 'https://picsum.photos/200/300',
       backgroundImage: '#0000',
