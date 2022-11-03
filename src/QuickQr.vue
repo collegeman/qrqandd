@@ -7,19 +7,19 @@
       <div class="form-group">
         <div id="qrcode" class="d-flex justify-content-center">
           <vue-qrcode
-            v-if="'svg' === tag"
+            v-if="'svg' === configTag"
             :options="options"
             :value="qRCodeData"
             tag="svg"
           ></vue-qrcode>
           <vue-qrcode
-            v-if="'img' === tag"
+            v-if="'img' === configTag"
             :options="options"
             :value="qRCodeData"
             tag="img"
           ></vue-qrcode>
           <vue-qrcode
-            v-if="'canvas' === tag"
+            v-if="'canvas' === configTag"
             id="canvas-qr-code"
             :key="canvasRefreshToken"
             :options="options"
@@ -128,11 +128,11 @@
           </label>
           <select
             id="tag"
-            v-model="tag"
+            v-model="configTag"
             class="form-control"
           >
             <option value="img">PNG</option>
-            <option value="svg">SVG</option>
+            <!-- <option value="svg">SVG</option> -->
             <option value="canvas">Canvas</option>
           </select>
         </div>
@@ -231,7 +231,11 @@
         type: String,
         default: 'img',
         validator(value) {
-          return ['img', 'svg', 'canvas'].includes(value)
+          return [
+            'img',
+            // 'svg',
+            'canvas',
+          ].includes(value)
         }
       },
       backgroundColor: {
@@ -266,6 +270,7 @@
         },
         canvasRefreshToken: Math.random(),
         showDownloadButton: true,
+        configTag: this.tag,
         config: {
           type: null,
           url: null,

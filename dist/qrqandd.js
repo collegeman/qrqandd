@@ -5553,7 +5553,9 @@ __webpack_require__.r(__webpack_exports__);
       type: String,
       "default": 'img',
       validator: function validator(value) {
-        return ['img', 'svg', 'canvas'].includes(value);
+        return ['img',
+        // 'svg',
+        'canvas'].includes(value);
       }
     },
     backgroundColor: {
@@ -5588,6 +5590,7 @@ __webpack_require__.r(__webpack_exports__);
       },
       canvasRefreshToken: Math.random(),
       showDownloadButton: true,
+      configTag: this.tag,
       config: {
         type: null,
         url: null,
@@ -5792,19 +5795,19 @@ var render = function render() {
     attrs: {
       id: "qrcode"
     }
-  }, ["svg" === _vm.tag ? _c("vue-qrcode", {
+  }, ["svg" === _vm.configTag ? _c("vue-qrcode", {
     attrs: {
       options: _vm.options,
       value: _vm.qRCodeData,
       tag: "svg"
     }
-  }) : _vm._e(), _vm._v(" "), "img" === _vm.tag ? _c("vue-qrcode", {
+  }) : _vm._e(), _vm._v(" "), "img" === _vm.configTag ? _c("vue-qrcode", {
     attrs: {
       options: _vm.options,
       value: _vm.qRCodeData,
       tag: "img"
     }
-  }) : _vm._e(), _vm._v(" "), "canvas" === _vm.tag ? _c("vue-qrcode", {
+  }) : _vm._e(), _vm._v(" "), "canvas" === _vm.configTag ? _c("vue-qrcode", {
     key: _vm.canvasRefreshToken,
     attrs: {
       id: "canvas-qr-code",
@@ -6050,8 +6053,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.tag,
-      expression: "tag"
+      value: _vm.configTag,
+      expression: "configTag"
     }],
     staticClass: "form-control",
     attrs: {
@@ -6065,7 +6068,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.tag = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+        _vm.configTag = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
       }
     }
   }, [_c("option", {
@@ -6073,10 +6076,6 @@ var render = function render() {
       value: "img"
     }
   }, [_vm._v("PNG")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "svg"
-    }
-  }, [_vm._v("SVG")]), _vm._v(" "), _c("option", {
     attrs: {
       value: "canvas"
     }

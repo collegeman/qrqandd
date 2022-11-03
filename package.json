@@ -1,6 +1,6 @@
 {
   "name": "@collegeman/qrqandd",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Quick & Dirty client-side QR code generator with a Vue front-end",
   "main": "dist/qrqandd.js",
   "repository": {
