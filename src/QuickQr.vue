@@ -1,69 +1,69 @@
 <template>
   <form
-      id="qrqandd"
-      class="card"
+    id="qrqandd"
+    class="card"
   >
     <div class="card-body">
       <div class="form-group">
         <div id="qrcode" class="d-flex justify-content-center">
           <vue-qrcode
-              v-if="'svg' === tag"
-              :options="options"
-              :value="qRCodeData"
-              tag="svg"
+            v-if="'svg' === tag"
+            :options="options"
+            :value="qRCodeData"
+            tag="svg"
           ></vue-qrcode>
           <vue-qrcode
-              v-if="'img' === tag"
-              :options="options"
-              :value="qRCodeData"
-              tag="img"
+            v-if="'img' === tag"
+            :options="options"
+            :value="qRCodeData"
+            tag="img"
           ></vue-qrcode>
           <vue-qrcode
-              v-if="'canvas' === tag"
-              id="canvas-qr-code"
-              :key="canvasRefreshToken"
-              :options="options"
-              :value="qRCodeData"
-              tag="canvas"
-              @ready="onReady"
+            v-if="'canvas' === tag"
+            id="canvas-qr-code"
+            :key="canvasRefreshToken"
+            :options="options"
+            :value="qRCodeData"
+            tag="canvas"
+            @ready="onReady"
           ></vue-qrcode>
         </div>
       </div>
       <div v-if="showForm">
         <div class="form-group">
-          <label for="tag">
+          <label for="value-type">
             QR Code Type
           </label>
           <select
-              id="type"
-              v-model="normalizedValue.type"
-              class="form-control"
+            id="value-type"
+            v-model="config.type"
+            class="form-control"
           >
             <option value="url">URL</option>
             <option value="vcard">VCard</option>
           </select>
         </div>
-        <div v-if="normalizedValue.type === 'url'" class="form-group">
+        <div v-if="config.type === 'url'" class="form-group">
           <label for="value">
             QR Code Value
           </label>
           <input
-              id="value"
-              v-model="normalizedValue.url"
-              class="form-control"
-              type="text"
+            id="value"
+            v-model="config.url"
+            class="form-control"
+            type="text"
           >
         </div>
-        <div v-if="normalizedValue.type === 'vcard'">
+        <div v-if="config.type === 'vcard'">
           <div class="form-group">
             <label for="name">
               Name
             </label>
             <input
-                id="name"
-                v-model="vcard.name"
-                class="form-control"
-                type="text"
+              id="name"
+              v-model="config.name"
+              class="form-control"
+              type="text"
             >
           </div>
           <div class="form-group">
@@ -71,10 +71,10 @@
               Email
             </label>
             <input
-                id="email"
-                v-model="vcard.email"
-                class="form-control"
-                type="email"
+              id="email"
+              v-model="config.email"
+              class="form-control"
+              type="email"
             >
           </div>
           <div class="form-group">
@@ -82,10 +82,10 @@
               Phone
             </label>
             <input
-                id="phone"
-                v-model="vcard.phone"
-                class="form-control"
-                type="text"
+              id="phone"
+              v-model="config.phone"
+              class="form-control"
+              type="text"
             >
           </div>
           <div class="form-group">
@@ -93,10 +93,10 @@
               Website
             </label>
             <input
-                id="website"
-                v-model="vcard.website"
-                class="form-control"
-                type="text"
+              id="website"
+              v-model="config.website"
+              class="form-control"
+              type="text"
             >
           </div>
           <div class="form-group">
@@ -104,10 +104,10 @@
               Job Title
             </label>
             <input
-                id="job-title"
-                v-model="vcard.job_title"
-                class="form-control"
-                type="text"
+              id="job-title"
+              v-model="config.job_title"
+              class="form-control"
+              type="text"
             >
           </div>
           <div class="form-group">
@@ -115,10 +115,10 @@
               Company
             </label>
             <input
-                id="company"
-                v-model="vcard.company"
-                class="form-control"
-                type="text"
+              id="company"
+              v-model="config.company"
+              class="form-control"
+              type="text"
             >
           </div>
         </div>
@@ -127,9 +127,9 @@
             Image Type
           </label>
           <select
-              id="tag"
-              v-model="tag"
-              class="form-control"
+            id="tag"
+            v-model="tag"
+            class="form-control"
           >
             <option value="img">PNG</option>
             <option value="svg">SVG</option>
@@ -137,41 +137,41 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="bg-color">
+          <label for="foreground-color">
             Foreground Color (Hex)
           </label>
           <select
-              id="foreground-color"
-              v-model="hasFgColor"
-              class="form-control"
+            id="foreground-color"
+            v-model="hasFgColor"
+            class="form-control"
           >
-            <option value="0">Black</option>
-            <option value="1">Other Color</option>
+            <option :value="0">Black</option>
+            <option :value="1">Other Color</option>
           </select>
           <chrome
-              v-if="hasFgColor == 1"
-              v-model="fColor"
-              :disable-alpha="true"
-              class="mx-auto mt-4 mb-2"
+            v-if="hasFgColor"
+            v-model="fgColor"
+            :disable-alpha="true"
+            class="mx-auto mt-4 mb-2"
           />
         </div>
         <div class="form-group">
-          <label for="bg-color">
+          <label for="background-color">
             Background Color (Hex)
           </label>
           <select
-              id="bg-color"
-              v-model="hasBgColor"
-              class="form-control"
+            id="background-color"
+            v-model="hasBgColor"
+            class="form-control"
           >
-            <option value="0">Transparent</option>
-            <option value="1">A Color</option>
+            <option :value="0">Transparent</option>
+            <option :value="1">A Color</option>
           </select>
           <chrome
-              v-if="hasBgColor == 1"
-              v-model="bColor"
-              :disable-alpha="true"
-              class="mx-auto mt-4 mb-2"
+            v-if="hasBgColor"
+            v-model="bgColor"
+            :disable-alpha="true"
+            class="mx-auto mt-4 mb-2"
           />
         </div>
         <div v-if="tag === 'canvas'">
@@ -180,15 +180,18 @@
               Inset Image
             </label>
             <select
-                id="image"
-                v-model="hasImage"
-                class="form-control"
+              id="image"
+              v-model="hasImage"
+              class="form-control"
             >
-              <option value="0">None</option>
-              <option value="1">A URL to an Image</option>
+              <option :value="0">None</option>
+              <option :value="1">A URL to an Image</option>
             </select>
           </div>
-          <div v-if="hasImage" class="form-group">
+          <div
+            v-if="hasImage"
+            class="form-group"
+          >
             <label for="image-url">
               Image URL
             </label>
@@ -197,9 +200,9 @@
         </div>
       </div>
       <button
-          v-if="showDownloadButton"
-          class="btn btn-block btn-dark"
-          @click.prevent="download"
+        v-if="showForm || showDownloadButton"
+        class="btn btn-block btn-dark"
+        @click.prevent="download"
       >
         Download
       </button>
@@ -208,236 +211,248 @@
 </template>
 
 <script>
-import {Chrome} from 'vue-color';
-import VueQrcode from '@chenfengyuan/vue-qrcode'
+  import {Chrome} from 'vue-color';
+  import VueQrcode from '@chenfengyuan/vue-qrcode'
 
-export default {
-  props: {
-    value: {
-      type: Object,
-      required: true
-    },
-    width: {
-      type: Number,
-      default: 1024
-    },
-    image: {
-      type: String,
-    },
-    tag: {
-      type: String,
-      default: 'img',
-      validator(value) {
-        return ['img', 'svg', 'canvas'].includes(value)
+  export default {
+    props: {
+      value: {
+        type: Object,
+        required: true
+      },
+      width: {
+        type: Number,
+        default: 1024
+      },
+      image: {
+        type: String,
+      },
+      tag: {
+        type: String,
+        default: 'img',
+        validator(value) {
+          return ['img', 'svg', 'canvas'].includes(value)
+        }
+      },
+      backgroundColor: {
+        type: String,
+        default: '#0000'
+      },
+      foregroundColor: {
+        type: String,
+        default: '#000'
+      },
+      showForm: {
+        type: Boolean,
+        default: false
       }
     },
-    backgroundColor: {
-      type: String,
-      default: '#0000'
-    },
-    foregroundColor: {
-      type: String,
-      default: '#000'
-    },
-    showForm: {
-      type: Boolean,
-      default: false
-    }
-  },
-  data() {
-    return {
-      color: {
-        dark: '000',
-        light: '0000',
-      },
-      vcard: {},
-      hasImage: 0,
-      hasBgColor: 0,
-      hasFgColor: 0,
-      imageUrl: '',
-      bColor: {
-        hex: '#CCCCCC'
-      },
-      fColor: {
-        hex: '#000'
-      },
-      canvasRefreshToken: Math.random(),
-      showDownloadButton: true,
-      normalizedValue: {}
-    }
-  },
-  components: {
-    VueQrcode,
-    Chrome
-  },
-
-  computed: {
-    qRCodeData() {
-      if (this.normalizedValue.type === 'url') {
-        return this.normalizedValue.url
-      } else {
-        return this.generateVCardData()
-      }
-    },
-    options() {
+    data() {
       return {
-        width: this.width,
         color: {
-          dark: this.fColor.hex,
-          light: this.bColor.hex,
+          dark: '000',
+          light: '0000',
+        },
+        vcard: {},
+        hasImage: 0,
+        hasBgColor: 0,
+        hasFgColor: 0,
+        imageUrl: '',
+        bgColor: {
+          hex: '#CCCCCC'
+        },
+        fgColor: {
+          hex: '#000'
+        },
+        canvasRefreshToken: Math.random(),
+        showDownloadButton: true,
+        config: {
+          type: null,
+          url: null,
+          name: null,
+          email: null,
+          job_title: null,
+          company: null,
+          website: null,
+          phone: null
         }
       }
     },
-    bgColor() {
-      if (this.hasBgColor) return this.backgroundColor;
-      return '#0000';
-    },
-    fgColor() {
-      if (this.hasFgColor) return this.foregroundColor;
-      return '#000';
-    }
-  },
-
-  mounted() {
-    if (this.foregroundColor !== '#000') {
-      this.hasFgColor = 1;
-    }
-
-    this.fColor.hex = this.foregroundColor
-
-    if (this.backgroundColor !== '#0000') {
-      this.hasBgColor = 1;
-    }
-    this.bColor.hex = this.backgroundColor
-    this.normalizedValue = this.value
-
-    if (this.image) {
-      this.imageUrl = this.image
-      this.hasImage = '1';
-    }
-
-  },
-
-  updated() {
-    if (this.tag === 'canvas' && this.imageUrl) {
-      setTimeout(() => {
-        this.onReady()
-      }, 100)
-    }
-  },
-
-  watch: {
-    imageUrl(newURL, oldURL) {
-      if (newURL && this.tag === 'canvas') {
-        this.refreshTokenForCanvas()
-
-      }
-    },
-    hasBgColor(value) {
-      if (value == 0) {
-        this.bColor.hex = '#0000'
-      }
-    },
-    hasFgColor(value) {
-      if (value == 0) {
-        this.fColor.hex = '#000'
-      }
-    },
-  },
-
-  methods: {
-    generateQRCode() {
-      if (this.normalizedValue.type === 'url') {
-        this.value = url
-      } else {
-        this.value = this.generateVCardData
-      }
+    components: {
+      VueQrcode,
+      Chrome
     },
 
-    download() {
-      const element = document.createElement("a");
-      if ('svg' === this.tag) {
-        const svg = document.querySelector('#qrcode svg').outerHTML
-        const blob = new Blob([svg.toString()])
-        element.download = "qrcode.svg"
-        element.href = window.URL.createObjectURL(blob)
-      } else if ('img' === this.tag) {
-        const img = document.querySelector('#qrcode img')
-        const byteString = atob(img.src.split(',')[1]);
-        const mimeString = img.src.split(',')[0].split(':')[1].split(';')[0]
-        const ab = new ArrayBuffer(byteString.length);
-        const ia = new Uint8Array(ab);
-        for (var i = 0; i < byteString.length; i++) {
-          ia[i] = byteString.charCodeAt(i);
+    computed: {
+      qRCodeData() {
+        if (this.config.type === 'url') {
+          return this.config.url
+        } else {
+          return this.generateVCardData()
         }
-        const blob = new Blob([ab], {type: mimeString})
-        element.download = "qrcode.png"
-        element.href = window.URL.createObjectURL(blob)
-      } else if ('canvas' === this.tag) {
-        let canvas = document.getElementById('canvas-qr-code');
-        element.crossorigin = 'anonymous'
-        element.href = canvas.toDataURL("image/png");
-        element.download = 'qrcode.png'
+      },
+      options() {
+        return {
+          width: this.width,
+          color: {
+            dark: this.fgColor.hex,
+            light: this.bgColor.hex,
+          }
+        }
+      },
+    },
+
+    mounted() {
+      if (this.foregroundColor !== '#000') {
+        this.hasFgColor = 1;
       }
 
-      element.click();
-      element.remove();
+      this.fgColor.hex = this.foregroundColor
+
+      if (this.backgroundColor !== '#0000') {
+        this.hasBgColor = 1;
+      }
+      this.bgColor.hex = this.backgroundColor
+      this.config = this.value
+
+      if (this.image) {
+        this.imageUrl = this.image
+        this.hasImage = 1;
+      }
+
     },
 
-    refreshTokenForCanvas() {
-      this.canvasRefreshToken = Math.random()
+    updated() {
+      if (this.tag === 'canvas' && this.imageUrl) {
+        setTimeout(() => {
+          this.onReady()
+        }, 100)
+      }
     },
 
-    onReady() {
-      if (!this.imageUrl) return;
-      let canvas = document.getElementById('canvas-qr-code')
-      const context = canvas.getContext('2d');
-      const image = new Image();
-      image.crossOrigin = 'Anonymous';
-      image.src = this.imageUrl;
-
-      image.onload = () => {
-        const coverage = 0.15;
-        const width = Math.round(canvas.width * coverage);
-        const x = (canvas.width - width) / 2;
-
-        this.drawImage(context, image, x, x, width, width);
-      };
+    watch: {
+      imageUrl(newURL, oldURL) {
+        if (newURL && this.tag === 'canvas') {
+          this.refreshTokenForCanvas()
+        }
+      },
+      hasImage() {
+        if (this.tag === 'canvas') {
+          this.refreshTokenForCanvas()
+        }
+      },
+      hasBgColor(value) {
+        if (value === 0) {
+          this.bgColor.hex = '#0000'
+        }
+      },
+      hasFgColor(value) {
+        if (value === 0) {
+          this.fgColor.hex = '#000'
+        }
+      },
     },
 
-    drawImage(context, image, x, y, width, height, radius = 4) {
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 2;
-      context.shadowBlur = 4;
-      context.shadowColor = '#00000040';
-      context.lineWidth = 8;
-      context.beginPath();
-      context.moveTo(x + radius, y);
-      context.arcTo(x + width, y, x + width, y + height, radius);
-      context.arcTo(x + width, y + height, x, y + height, radius);
-      context.arcTo(x, y + height, x, y, radius);
-      context.arcTo(x, y, x + width, y, radius);
-      context.closePath();
-      context.strokeStyle = '#fff';
-      context.stroke();
-      context.clip();
-      context.fillStyle = '#fff';
-      context.fillRect(x, x, width, height);
-      context.drawImage(image, x, x, width, height);
-    },
+    methods: {
+      download() {
+        const element = document.createElement("a");
+        if ('svg' === this.tag) {
+          const svg = document.querySelector('#qrcode svg').outerHTML
+          const blob = new Blob([svg.toString()])
+          element.download = "qrcode.svg"
+          element.href = window.URL.createObjectURL(blob)
+        } else if ('img' === this.tag) {
+          const img = document.querySelector('#qrcode img')
+          const byteString = atob(img.src.split(',')[1]);
+          const mimeString = img.src.split(',')[0].split(':')[1].split(';')[0]
+          const ab = new ArrayBuffer(byteString.length);
+          const ia = new Uint8Array(ab);
+          for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          const blob = new Blob([ab], {type: mimeString})
+          element.download = "qrcode.png"
+          element.href = window.URL.createObjectURL(blob)
+        } else if ('canvas' === this.tag) {
+          let canvas = document.getElementById('canvas-qr-code');
+          element.crossorigin = 'anonymous'
+          element.href = canvas.toDataURL("image/png");
+          element.download = 'qrcode.png'
+        }
 
-    generateVCardData() {
-      return "BEGIN:VCARD\n" +
-          "VERSION:4.0\n" +
-          "N:" + this.vcard.name + "\n" +
-          "FN:" + this.vcard.name + "\n" +
-          "EMAIL:" + this.vcard.email + "\n" +
-          "ORG:" + this.vcard.company + "\n" +
-          "TITLE:" + this.vcard.job_title + "\n" +
-          "URL:" + "https://" + this.vcard.website + "\n" +
-          "TEL:" + this.vcard.phone + "\n" +
-          "END:VCARD";
+        element.click();
+        element.remove();
+      },
+
+      refreshTokenForCanvas() {
+        this.canvasRefreshToken = Math.random()
+      },
+
+      onReady() {
+        if (!this.imageUrl) return;
+        let canvas = document.getElementById('canvas-qr-code')
+        const context = canvas.getContext('2d');
+        const image = new Image();
+        image.crossOrigin = 'Anonymous';
+        image.src = this.imageUrl;
+
+        if (this.hasImage) {
+          image.onload = () => {
+            const coverage = 0.15;
+            const width = Math.round(canvas.width * coverage);
+            const x = (canvas.width - width) / 2;
+            this.drawImage(context, image, x, x, width, width);
+          };
+        }
+      },
+
+      drawImage(context, image, x, y, width, height, radius = 4) {
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 2;
+        context.shadowBlur = 4;
+        context.shadowColor = '#00000040';
+        context.lineWidth = 50;
+        context.beginPath();
+        context.moveTo(x + radius, y);
+        context.arcTo(x + width, y, x + width, y + height, radius);
+        context.arcTo(x + width, y + height, x, y + height, radius);
+        context.arcTo(x, y + height, x, y, radius);
+        context.arcTo(x, y, x + width, y, radius);
+        context.closePath();
+        context.strokeStyle = '#fff';
+        context.stroke();
+        context.clip();
+        context.fillStyle = '#fff';
+        context.fillRect(x, x, width, height);
+        context.drawImage(image, x, x, width, height);
+      },
+
+      generateVCardData() {
+        let vcard = []
+
+        vcard.push("BEGIN:VCARD")
+
+        vcard.push("VERSION:4.0")
+        vcard.push("N:" + this.config.name)
+        vcard.push("FN:" + this.config.name)
+        vcard.push("EMAIL:" + this.config.email)
+        vcard.push("ORG:" + this.config.company)
+        vcard.push("TITLE:" + this.config.job_title)
+        if (this.config.website) {
+          if (this.config.website.indexOf('http') !== 0) {
+
+          }
+
+          vcard.push("URL:" + "https://" + this.config.website)
+        }
+
+        if (this.config.phone) {
+          vcard.push("TEL:" + this.config.phone)
+        }
+        vcard.push("END:VCARD")
+
+        return vcard.join("\n")
+      }
     }
   }
-}
 </script>

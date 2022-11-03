@@ -5580,15 +5580,24 @@ __webpack_require__.r(__webpack_exports__);
       hasBgColor: 0,
       hasFgColor: 0,
       imageUrl: '',
-      bColor: {
+      bgColor: {
         hex: '#CCCCCC'
       },
-      fColor: {
+      fgColor: {
         hex: '#000'
       },
       canvasRefreshToken: Math.random(),
       showDownloadButton: true,
-      normalizedValue: {}
+      config: {
+        type: null,
+        url: null,
+        name: null,
+        email: null,
+        job_title: null,
+        company: null,
+        website: null,
+        phone: null
+      }
     };
   },
   components: {
@@ -5597,8 +5606,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     qRCodeData: function qRCodeData() {
-      if (this.normalizedValue.type === 'url') {
-        return this.normalizedValue.url;
+      if (this.config.type === 'url') {
+        return this.config.url;
       } else {
         return this.generateVCardData();
       }
@@ -5607,33 +5616,25 @@ __webpack_require__.r(__webpack_exports__);
       return {
         width: this.width,
         color: {
-          dark: this.fColor.hex,
-          light: this.bColor.hex
+          dark: this.fgColor.hex,
+          light: this.bgColor.hex
         }
       };
-    },
-    bgColor: function bgColor() {
-      if (this.hasBgColor) return this.backgroundColor;
-      return '#0000';
-    },
-    fgColor: function fgColor() {
-      if (this.hasFgColor) return this.foregroundColor;
-      return '#000';
     }
   },
   mounted: function mounted() {
     if (this.foregroundColor !== '#000') {
       this.hasFgColor = 1;
     }
-    this.fColor.hex = this.foregroundColor;
+    this.fgColor.hex = this.foregroundColor;
     if (this.backgroundColor !== '#0000') {
       this.hasBgColor = 1;
     }
-    this.bColor.hex = this.backgroundColor;
-    this.normalizedValue = this.value;
+    this.bgColor.hex = this.backgroundColor;
+    this.config = this.value;
     if (this.image) {
       this.imageUrl = this.image;
-      this.hasImage = '1';
+      this.hasImage = 1;
     }
   },
   updated: function updated() {
@@ -5650,25 +5651,23 @@ __webpack_require__.r(__webpack_exports__);
         this.refreshTokenForCanvas();
       }
     },
+    hasImage: function hasImage() {
+      if (this.tag === 'canvas') {
+        this.refreshTokenForCanvas();
+      }
+    },
     hasBgColor: function hasBgColor(value) {
-      if (value == 0) {
-        this.bColor.hex = '#0000';
+      if (value === 0) {
+        this.bgColor.hex = '#0000';
       }
     },
     hasFgColor: function hasFgColor(value) {
-      if (value == 0) {
-        this.fColor.hex = '#000';
+      if (value === 0) {
+        this.fgColor.hex = '#000';
       }
     }
   },
   methods: {
-    generateQRCode: function generateQRCode() {
-      if (this.normalizedValue.type === 'url') {
-        this.value = url;
-      } else {
-        this.value = this.generateVCardData;
-      }
-    },
     download: function download() {
       var element = document.createElement("a");
       if ('svg' === this.tag) {
@@ -5710,12 +5709,14 @@ __webpack_require__.r(__webpack_exports__);
       var image = new Image();
       image.crossOrigin = 'Anonymous';
       image.src = this.imageUrl;
-      image.onload = function () {
-        var coverage = 0.15;
-        var width = Math.round(canvas.width * coverage);
-        var x = (canvas.width - width) / 2;
-        _this2.drawImage(context, image, x, x, width, width);
-      };
+      if (this.hasImage) {
+        image.onload = function () {
+          var coverage = 0.15;
+          var width = Math.round(canvas.width * coverage);
+          var x = (canvas.width - width) / 2;
+          _this2.drawImage(context, image, x, x, width, width);
+        };
+      }
     },
     drawImage: function drawImage(context, image, x, y, width, height) {
       var radius = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 4;
@@ -5723,7 +5724,7 @@ __webpack_require__.r(__webpack_exports__);
       context.shadowOffsetY = 2;
       context.shadowBlur = 4;
       context.shadowColor = '#00000040';
-      context.lineWidth = 8;
+      context.lineWidth = 50;
       context.beginPath();
       context.moveTo(x + radius, y);
       context.arcTo(x + width, y, x + width, y + height, radius);
@@ -5739,7 +5740,23 @@ __webpack_require__.r(__webpack_exports__);
       context.drawImage(image, x, x, width, height);
     },
     generateVCardData: function generateVCardData() {
-      return "BEGIN:VCARD\n" + "VERSION:4.0\n" + "N:" + this.vcard.name + "\n" + "FN:" + this.vcard.name + "\n" + "EMAIL:" + this.vcard.email + "\n" + "ORG:" + this.vcard.company + "\n" + "TITLE:" + this.vcard.job_title + "\n" + "URL:" + "https://" + this.vcard.website + "\n" + "TEL:" + this.vcard.phone + "\n" + "END:VCARD";
+      var vcard = [];
+      vcard.push("BEGIN:VCARD");
+      vcard.push("VERSION:4.0");
+      vcard.push("N:" + this.config.name);
+      vcard.push("FN:" + this.config.name);
+      vcard.push("EMAIL:" + this.config.email);
+      vcard.push("ORG:" + this.config.company);
+      vcard.push("TITLE:" + this.config.job_title);
+      if (this.config.website) {
+        if (this.config.website.indexOf('http') !== 0) {}
+        vcard.push("URL:" + "https://" + this.config.website);
+      }
+      if (this.config.phone) {
+        vcard.push("TEL:" + this.config.phone);
+      }
+      vcard.push("END:VCARD");
+      return vcard.join("\n");
     }
   }
 });
@@ -5802,18 +5819,18 @@ var render = function render() {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
-      "for": "tag"
+      "for": "value-type"
     }
   }, [_vm._v("\n          QR Code Type\n        ")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.normalizedValue.type,
-      expression: "normalizedValue.type"
+      value: _vm.config.type,
+      expression: "config.type"
     }],
     staticClass: "form-control",
     attrs: {
-      id: "type"
+      id: "value-type"
     },
     on: {
       change: function change($event) {
@@ -5823,7 +5840,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.normalizedValue, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.config, "type", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -5834,7 +5851,7 @@ var render = function render() {
     attrs: {
       value: "vcard"
     }
-  }, [_vm._v("VCard")])])]), _vm._v(" "), _vm.normalizedValue.type === "url" ? _c("div", {
+  }, [_vm._v("VCard")])])]), _vm._v(" "), _vm.config.type === "url" ? _c("div", {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
@@ -5844,8 +5861,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.normalizedValue.url,
-      expression: "normalizedValue.url"
+      value: _vm.config.url,
+      expression: "config.url"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5853,15 +5870,15 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.normalizedValue.url
+      value: _vm.config.url
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.normalizedValue, "url", $event.target.value);
+        _vm.$set(_vm.config, "url", $event.target.value);
       }
     }
-  })]) : _vm._e(), _vm._v(" "), _vm.normalizedValue.type === "vcard" ? _c("div", [_c("div", {
+  })]) : _vm._e(), _vm._v(" "), _vm.config.type === "vcard" ? _c("div", [_c("div", {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
@@ -5871,8 +5888,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.name,
-      expression: "vcard.name"
+      value: _vm.config.name,
+      expression: "config.name"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5880,12 +5897,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.name
+      value: _vm.config.name
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "name", $event.target.value);
+        _vm.$set(_vm.config, "name", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5898,8 +5915,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.email,
-      expression: "vcard.email"
+      value: _vm.config.email,
+      expression: "config.email"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5907,12 +5924,12 @@ var render = function render() {
       type: "email"
     },
     domProps: {
-      value: _vm.vcard.email
+      value: _vm.config.email
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "email", $event.target.value);
+        _vm.$set(_vm.config, "email", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5925,8 +5942,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.phone,
-      expression: "vcard.phone"
+      value: _vm.config.phone,
+      expression: "config.phone"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5934,12 +5951,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.phone
+      value: _vm.config.phone
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "phone", $event.target.value);
+        _vm.$set(_vm.config, "phone", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5952,8 +5969,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.website,
-      expression: "vcard.website"
+      value: _vm.config.website,
+      expression: "config.website"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5961,12 +5978,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.website
+      value: _vm.config.website
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "website", $event.target.value);
+        _vm.$set(_vm.config, "website", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -5979,8 +5996,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.job_title,
-      expression: "vcard.job_title"
+      value: _vm.config.job_title,
+      expression: "config.job_title"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5988,12 +6005,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.job_title
+      value: _vm.config.job_title
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "job_title", $event.target.value);
+        _vm.$set(_vm.config, "job_title", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -6006,8 +6023,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.vcard.company,
-      expression: "vcard.company"
+      value: _vm.config.company,
+      expression: "config.company"
     }],
     staticClass: "form-control",
     attrs: {
@@ -6015,12 +6032,12 @@ var render = function render() {
       type: "text"
     },
     domProps: {
-      value: _vm.vcard.company
+      value: _vm.config.company
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.vcard, "company", $event.target.value);
+        _vm.$set(_vm.config, "company", $event.target.value);
       }
     }
   })])]) : _vm._e(), _vm._v(" "), _c("div", {
@@ -6067,7 +6084,7 @@ var render = function render() {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
-      "for": "bg-color"
+      "for": "foreground-color"
     }
   }, [_vm._v("\n          Foreground Color (Hex)\n        ")]), _vm._v(" "), _c("select", {
     directives: [{
@@ -6092,30 +6109,30 @@ var render = function render() {
       }
     }
   }, [_c("option", {
-    attrs: {
-      value: "0"
+    domProps: {
+      value: 0
     }
   }, [_vm._v("Black")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "1"
+    domProps: {
+      value: 1
     }
-  }, [_vm._v("Other Color")])]), _vm._v(" "), _vm.hasFgColor == 1 ? _c("chrome", {
+  }, [_vm._v("Other Color")])]), _vm._v(" "), _vm.hasFgColor ? _c("chrome", {
     staticClass: "mx-auto mt-4 mb-2",
     attrs: {
       "disable-alpha": true
     },
     model: {
-      value: _vm.fColor,
+      value: _vm.fgColor,
       callback: function callback($$v) {
-        _vm.fColor = $$v;
+        _vm.fgColor = $$v;
       },
-      expression: "fColor"
+      expression: "fgColor"
     }
   }) : _vm._e()], 1), _vm._v(" "), _c("div", {
     staticClass: "form-group"
   }, [_c("label", {
     attrs: {
-      "for": "bg-color"
+      "for": "background-color"
     }
   }, [_vm._v("\n          Background Color (Hex)\n        ")]), _vm._v(" "), _c("select", {
     directives: [{
@@ -6126,7 +6143,7 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
-      id: "bg-color"
+      id: "background-color"
     },
     on: {
       change: function change($event) {
@@ -6140,24 +6157,24 @@ var render = function render() {
       }
     }
   }, [_c("option", {
-    attrs: {
-      value: "0"
+    domProps: {
+      value: 0
     }
   }, [_vm._v("Transparent")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "1"
+    domProps: {
+      value: 1
     }
-  }, [_vm._v("A Color")])]), _vm._v(" "), _vm.hasBgColor == 1 ? _c("chrome", {
+  }, [_vm._v("A Color")])]), _vm._v(" "), _vm.hasBgColor ? _c("chrome", {
     staticClass: "mx-auto mt-4 mb-2",
     attrs: {
       "disable-alpha": true
     },
     model: {
-      value: _vm.bColor,
+      value: _vm.bgColor,
       callback: function callback($$v) {
-        _vm.bColor = $$v;
+        _vm.bgColor = $$v;
       },
-      expression: "bColor"
+      expression: "bgColor"
     }
   }) : _vm._e()], 1), _vm._v(" "), _vm.tag === "canvas" ? _c("div", [_c("div", {
     staticClass: "form-group"
@@ -6188,12 +6205,12 @@ var render = function render() {
       }
     }
   }, [_c("option", {
-    attrs: {
-      value: "0"
+    domProps: {
+      value: 0
     }
   }, [_vm._v("None")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "1"
+    domProps: {
+      value: 1
     }
   }, [_vm._v("A URL to an Image")])])]), _vm._v(" "), _vm.hasImage ? _c("div", {
     staticClass: "form-group"
@@ -6222,7 +6239,7 @@ var render = function render() {
         _vm.imageUrl = $event.target.value;
       }
     }
-  })]) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.showDownloadButton ? _c("button", {
+  })]) : _vm._e()]) : _vm._e()]) : _vm._e(), _vm._v(" "), _vm.showForm || _vm.showDownloadButton ? _c("button", {
     staticClass: "btn btn-block btn-dark",
     on: {
       click: function click($event) {
@@ -18455,18 +18472,7 @@ var appConfig = {
   },
   data: function data() {
     return {
-      value: {
-        type: 'url',
-        url: document.location.href,
-        name: 'Seth Atam',
-        company: 'c21 redwood',
-        title: 'Web Developer',
-        email: 'sethatam@c21redwood.com',
-        phone: '(123) 456 1234'
-      },
-      image: 'https://picsum.photos/200/300',
-      backgroundImage: '#0000',
-      foregroundImage: '#000'
+      //
     };
   }
 };

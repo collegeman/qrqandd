@@ -1,13 +1,22 @@
 {
   "name": "@collegeman/qrqandd",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Quick & Dirty client-side QR code generator with a Vue front-end",
   "main": "dist/qrqandd.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/collegeman/qrqandd.git"
   },
-  "author": "Aaron Collegeman <aaron@collegeman.net>",
+  "authors": [
+    {
+      "name": "Aaron Collegeman",
+      "uri": "https://github.com/collegeman"
+    },
+    {
+      "name": "Seth Atam",
+      "uri": "https://github.com/sethatam"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "laravel-mix": "^6.0.49",
@@ -25,7 +34,7 @@
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "postcss": "^8.4.18",
     "qrcode": "1",
-    "vue": "^2.7.13",
+    "vue": "^2.6.10",
     "vue-color": "^2.8.1"
   }
 }
