@@ -61,7 +61,7 @@
             </label>
             <input
                 id="name"
-                v-model="vcard.name"
+                v-model="normalizedValue.name"
                 class="form-control"
                 type="text"
             >
@@ -72,7 +72,7 @@
             </label>
             <input
                 id="email"
-                v-model="vcard.email"
+                v-model="normalizedValue.email"
                 class="form-control"
                 type="email"
             >
@@ -83,7 +83,7 @@
             </label>
             <input
                 id="phone"
-                v-model="vcard.phone"
+                v-model="normalizedValue.phone"
                 class="form-control"
                 type="text"
             >
@@ -94,7 +94,7 @@
             </label>
             <input
                 id="website"
-                v-model="vcard.website"
+                v-model="normalizedValue.website"
                 class="form-control"
                 type="text"
             >
@@ -105,7 +105,7 @@
             </label>
             <input
                 id="job-title"
-                v-model="vcard.job_title"
+                v-model="normalizedValue.job_title"
                 class="form-control"
                 type="text"
             >
@@ -116,7 +116,7 @@
             </label>
             <input
                 id="company"
-                v-model="vcard.company"
+                v-model="normalizedValue.company"
                 class="form-control"
                 type="text"
             >
@@ -429,13 +429,13 @@ export default {
     generateVCardData() {
       return "BEGIN:VCARD\n" +
           "VERSION:4.0\n" +
-          "N:" + this.vcard.name + "\n" +
-          "FN:" + this.vcard.name + "\n" +
-          "EMAIL:" + this.vcard.email + "\n" +
-          "ORG:" + this.vcard.company + "\n" +
-          "TITLE:" + this.vcard.job_title + "\n" +
-          "URL:" + "https://" + this.vcard.website + "\n" +
-          "TEL:" + this.vcard.phone + "\n" +
+          "N:" + this.normalizedValue.name + "\n" +
+          "FN:" + this.normalizedValue.name + "\n" +
+          "EMAIL:" + this.normalizedValue.email + "\n" +
+          "ORG:" + this.normalizedValue.company + "\n" +
+          "TITLE:" + this.normalizedValue.job_title + "\n" +
+          "URL:" + this.normalizedValue.website + "\n" +
+          "TEL:" + this.normalizedValue.phone + "\n" +
           "END:VCARD";
     }
   }
