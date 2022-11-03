@@ -1,7 +1,6 @@
 <template>
   <form
-    id="qrqandd"
-    class="card"
+    class="--quick-qr card"
   >
     <div class="card-body">
       <div class="form-group">
@@ -210,11 +209,22 @@
   </form>
 </template>
 
+<style scoped>
+.--quick-qr canvas,
+.--quick-qr svg,
+.--quick-qr img {
+  display: block;
+  max-width: 100% !important;
+  height: auto !important;
+}
+</style>
+
 <script>
   import {Chrome} from 'vue-color';
   import VueQrcode from '@chenfengyuan/vue-qrcode'
 
   export default {
+    name: 'quick-qr',
     props: {
       value: {
         type: Object,

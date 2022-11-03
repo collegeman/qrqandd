@@ -1,3 +1,7 @@
-import QuickQr from './QuickQr'
+import QuickQr from './QuickQr.vue'
 
-export default QuickQr
+export default {
+ install(Vue, options) {
+  Vue.component("quick-qr", QuickQr);
+ }
+};
