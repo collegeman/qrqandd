@@ -1,12 +1,12 @@
 {
   "name": "@collegeman/qrqandd",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Quick & Dirty client-side QR code generator with a Vue front-end",
-  "main": "dist/lib.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/collegeman/qrqandd.git"
-  },
+  "license": "MIT",
+  "main": "dist/quick-qr.ssr.js",
+  "browser": "dist/quick-qr.esm.js",
+  "module": "dist/quick-qr.esm.js",
+  "unpkg": "dist/quick-qr.min.js",
   "authors": [
     {
       "name": "Aaron Collegeman",
@@ -17,24 +17,49 @@
       "uri": "https://github.com/sethatam"
     }
   ],
-  "license": "MIT",
-  "devDependencies": {
-    "laravel-mix": "^6.0.49",
-    "vue-loader": "^15.9.6",
-    "vue-template-compiler": "^2.7.13"
-  },
-  "bugs": {
-    "url": "https://github.com/collegeman/qrqandd/issues"
-  },
-  "homepage": "https://github.com/collegeman/qrqandd#readme",
+  "files": [
+    "dist/*",
+    "src/**/*.vue"
+  ],
+  "sideEffects": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "vue-cli-service serve dev/serve.js",
+    "prebuild": "rimraf ./dist",
+    "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
+    "build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
+    "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
+    "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
+    "@rollup/plugin-alias": "^3.1.2",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-replace": "^2.4.2",
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-service": "^4.5.13",
+    "cross-env": "^7.0.3",
+    "minimist": "^1.2.5",
     "postcss": "^8.4.18",
     "qrcode": "1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.52.8",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-vue": "^5.1.9",
     "vue": "^2.6.10",
-    "vue-color": "^2.8.1"
+    "vue-color": "^2.8.1",
+    "vue-template-compiler": "^2.6.14",
+    "bootstrap": "4.5.3",
+    "jquery": "^3.6.1",
+    "popper.js": "^1.16.1"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.14"
+  },
+  "engines": {
+    "node": ">=12"
   }
 }

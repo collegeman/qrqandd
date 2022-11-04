@@ -173,7 +173,7 @@
             class="mx-auto mt-4 mb-2"
           />
         </div>
-        <div v-if="tag === 'canvas'">
+        <div v-if="configTag === 'canvas'">
           <div class="form-group">
             <label for="image">
               Inset Image
@@ -223,7 +223,7 @@
   import {Chrome} from 'vue-color';
   import VueQrcode from '@chenfengyuan/vue-qrcode'
 
-  export default {
+  export default /*#__PURE__*/{
     name: 'quick-qr',
     props: {
       value: {
@@ -454,11 +454,7 @@
         vcard.push("ORG:" + this.config.company)
         vcard.push("TITLE:" + this.config.job_title)
         if (this.config.website) {
-          if (this.config.website.indexOf('http') !== 0) {
-
-          }
-
-          vcard.push("URL:" + "https://" + this.config.website)
+          vcard.push("URL:" + this.config.website)
         }
 
         if (this.config.phone) {
@@ -471,3 +467,4 @@
     }
   }
 </script>
+
