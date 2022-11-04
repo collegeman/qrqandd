@@ -22,6 +22,7 @@ export default Vue.extend({
           :value="{ type: 'url', url: 'https://makeqrcode.dev' }"
           tag="canvas"
           image="https://picsum.photos/200/300"
+          ui="card"
           show-form
         ></quick-qr>
       </div>

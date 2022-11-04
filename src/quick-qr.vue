@@ -1,32 +1,36 @@
 <template>
-  <form
-    class="--quick-qr card"
+  <div
+    :class="[
+      '--quick-qr',
+      {
+        'card': ui === 'card',
+      }
+    ]"
   >
-    <div class="card-body">
-      <div class="form-group">
-        <div id="qrcode" class="d-flex justify-content-center">
-          <vue-qrcode
-            v-if="'svg' === configTag"
-            :options="options"
-            :value="qRCodeData"
-            tag="svg"
-          ></vue-qrcode>
-          <vue-qrcode
-            v-if="'img' === configTag"
-            :options="options"
-            :value="qRCodeData"
-            tag="img"
-          ></vue-qrcode>
-          <vue-qrcode
-            v-if="'canvas' === configTag"
-            id="canvas-qr-code"
-            :key="canvasRefreshToken"
-            :options="options"
-            :value="qRCodeData"
-            tag="canvas"
-            @ready="onReady"
-          ></vue-qrcode>
-        </div>
+    <div :class="{
+      'card-body': ui === 'card'
+    }">
+      <div class="d-flex justify-content-center">
+        <vue-qrcode
+          v-if="'svg' === configTag"
+          :options="options"
+          :value="qRCodeData"
+          tag="svg"
+        ></vue-qrcode>
+        <vue-qrcode
+          v-if="'img' === configTag"
+          :options="options"
+          :value="qRCodeData"
+          tag="img"
+        ></vue-qrcode>
+        <vue-qrcode
+          v-if="'canvas' === configTag"
+          :key="canvasRefreshToken"
+          :options="options"
+          :value="qRCodeData"
+          tag="canvas"
+          @ready="onReady"
+        ></vue-qrcode>
       </div>
       <div v-if="showForm">
         <div class="form-group">
@@ -206,7 +210,7 @@
         Download
       </button>
     </div>
-  </form>
+  </div>
 </template>
 
 <style scoped>
@@ -259,27 +263,30 @@
       showForm: {
         type: Boolean,
         default: false
+      },
+      showDownloadButton: {
+        type: Boolean,
+        default: false,
+      },
+      ui: {
+        type: [String, Boolean],
+        default: false,
       }
     },
     data() {
       return {
-        color: {
-          dark: '000',
-          light: '0000',
-        },
         vcard: {},
         hasImage: 0,
         hasBgColor: 0,
         hasFgColor: 0,
         imageUrl: '',
         bgColor: {
-          hex: '#CCCCCC'
+          hex: '#0000'
         },
         fgColor: {
           hex: '#000'
         },
         canvasRefreshToken: Math.random(),
-        showDownloadButton: true,
         configTag: this.tag,
         config: {
           type: null,
@@ -319,26 +326,27 @@
 
     mounted() {
       if (this.foregroundColor !== '#000') {
-        this.hasFgColor = 1;
+        this.hasFgColor = 1
       }
 
       this.fgColor.hex = this.foregroundColor
 
       if (this.backgroundColor !== '#0000') {
-        this.hasBgColor = 1;
+        this.hasBgColor = 1
       }
+
       this.bgColor.hex = this.backgroundColor
       this.config = this.value
 
       if (this.image) {
         this.imageUrl = this.image
-        this.hasImage = 1;
+        this.hasImage = 1
       }
 
     },
 
     updated() {
-      if (this.tag === 'canvas' && this.imageUrl) {
+      if (this.configTag === 'canvas' && this.imageUrl) {
         setTimeout(() => {
           this.onReady()
         }, 100)
@@ -347,12 +355,12 @@
 
     watch: {
       imageUrl(newURL, oldURL) {
-        if (newURL && this.tag === 'canvas') {
+        if (newURL && this.configTag === 'canvas') {
           this.refreshTokenForCanvas()
         }
       },
       hasImage() {
-        if (this.tag === 'canvas') {
+        if (this.configTag === 'canvas') {
           this.refreshTokenForCanvas()
         }
       },
@@ -370,33 +378,33 @@
 
     methods: {
       download() {
-        const element = document.createElement("a");
-        if ('svg' === this.tag) {
-          const svg = document.querySelector('#qrcode svg').outerHTML
+        const element = document.createElement("a")
+        if ('svg' === this.configTag) {
+          const svg = this.$el.querySelector('svg').outerHTML
           const blob = new Blob([svg.toString()])
           element.download = "qrcode.svg"
           element.href = window.URL.createObjectURL(blob)
-        } else if ('img' === this.tag) {
-          const img = document.querySelector('#qrcode img')
-          const byteString = atob(img.src.split(',')[1]);
+        } else if ('img' === this.configTag) {
+          const img = this.$el.querySelector('img')
+          const byteString = atob(img.src.split(',')[1])
           const mimeString = img.src.split(',')[0].split(':')[1].split(';')[0]
-          const ab = new ArrayBuffer(byteString.length);
-          const ia = new Uint8Array(ab);
+          const ab = new ArrayBuffer(byteString.length)
+          const ia = new Uint8Array(ab)
           for (var i = 0; i < byteString.length; i++) {
-            ia[i] = byteString.charCodeAt(i);
+            ia[i] = byteString.charCodeAt(i)
           }
           const blob = new Blob([ab], {type: mimeString})
           element.download = "qrcode.png"
           element.href = window.URL.createObjectURL(blob)
-        } else if ('canvas' === this.tag) {
-          let canvas = document.getElementById('canvas-qr-code');
+        } else if ('canvas' === this.configTag) {
+          let canvas = this.$el.querySelector('canvas')
           element.crossorigin = 'anonymous'
-          element.href = canvas.toDataURL("image/png");
+          element.href = canvas.toDataURL("image/png")
           element.download = 'qrcode.png'
         }
 
-        element.click();
-        element.remove();
+        element.click()
+        element.remove()
       },
 
       refreshTokenForCanvas() {
@@ -404,42 +412,44 @@
       },
 
       onReady() {
-        if (!this.imageUrl) return;
-        let canvas = document.getElementById('canvas-qr-code')
-        const context = canvas.getContext('2d');
-        const image = new Image();
-        image.crossOrigin = 'Anonymous';
-        image.src = this.imageUrl;
+        if (!this.imageUrl) {
+          return false
+        }
+        let canvas = this.$el.querySelector('canvas')
+        const context = canvas.getContext('2d')
+        const image = new Image()
+        image.crossOrigin = 'Anonymous'
+        image.src = this.imageUrl
 
         if (this.hasImage) {
           image.onload = () => {
-            const coverage = 0.15;
-            const width = Math.round(canvas.width * coverage);
-            const x = (canvas.width - width) / 2;
-            this.drawImage(context, image, x, x, width, width);
-          };
+            const coverage = 0.15
+            const width = Math.round(canvas.width * coverage)
+            const x = (canvas.width - width) / 2
+            this.drawImage(context, image, x, x, width, width)
+          }
         }
       },
 
       drawImage(context, image, x, y, width, height, radius = 4) {
-        context.shadowOffsetX = 0;
-        context.shadowOffsetY = 2;
-        context.shadowBlur = 4;
-        context.shadowColor = '#00000040';
-        context.lineWidth = 50;
-        context.beginPath();
-        context.moveTo(x + radius, y);
-        context.arcTo(x + width, y, x + width, y + height, radius);
-        context.arcTo(x + width, y + height, x, y + height, radius);
-        context.arcTo(x, y + height, x, y, radius);
-        context.arcTo(x, y, x + width, y, radius);
-        context.closePath();
-        context.strokeStyle = '#fff';
-        context.stroke();
-        context.clip();
-        context.fillStyle = '#fff';
-        context.fillRect(x, x, width, height);
-        context.drawImage(image, x, x, width, height);
+        context.shadowOffsetX = 0
+        context.shadowOffsetY = 2
+        context.shadowBlur = 4
+        context.shadowColor = '#00000040'
+        context.lineWidth = 50
+        context.beginPath()
+        context.moveTo(x + radius, y)
+        context.arcTo(x + width, y, x + width, y + height, radius)
+        context.arcTo(x + width, y + height, x, y + height, radius)
+        context.arcTo(x, y + height, x, y, radius)
+        context.arcTo(x, y, x + width, y, radius)
+        context.closePath()
+        context.strokeStyle = '#fff'
+        context.stroke()
+        context.clip()
+        context.fillStyle = '#fff'
+        context.fillRect(x, x, width, height)
+        context.drawImage(image, x, x, width, height)
       },
 
       generateVCardData() {
