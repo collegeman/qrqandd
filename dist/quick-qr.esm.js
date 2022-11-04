@@ -5552,27 +5552,30 @@ var script = {
     showForm: {
       type: Boolean,
       default: false
+    },
+    showDownloadButton: {
+      type: Boolean,
+      default: false
+    },
+    ui: {
+      type: [String, Boolean],
+      default: false
     }
   },
   data() {
     return {
-      color: {
-        dark: '000',
-        light: '0000'
-      },
       vcard: {},
       hasImage: 0,
       hasBgColor: 0,
       hasFgColor: 0,
       imageUrl: '',
       bgColor: {
-        hex: '#CCCCCC'
+        hex: '#0000'
       },
       fgColor: {
         hex: '#000'
       },
       canvasRefreshToken: Math.random(),
-      showDownloadButton: true,
       configTag: this.tag,
       config: {
         type: null,
@@ -5624,7 +5627,7 @@ var script = {
     }
   },
   updated() {
-    if (this.tag === 'canvas' && this.imageUrl) {
+    if (this.configTag === 'canvas' && this.imageUrl) {
       setTimeout(() => {
         this.onReady();
       }, 100);
@@ -5632,12 +5635,12 @@ var script = {
   },
   watch: {
     imageUrl(newURL, oldURL) {
-      if (newURL && this.tag === 'canvas') {
+      if (newURL && this.configTag === 'canvas') {
         this.refreshTokenForCanvas();
       }
     },
     hasImage() {
-      if (this.tag === 'canvas') {
+      if (this.configTag === 'canvas') {
         this.refreshTokenForCanvas();
       }
     },
@@ -5655,13 +5658,13 @@ var script = {
   methods: {
     download() {
       const element = document.createElement("a");
-      if ('svg' === this.tag) {
-        const svg = document.querySelector('#qrcode svg').outerHTML;
+      if ('svg' === this.configTag) {
+        const svg = this.$el.querySelector('svg').outerHTML;
         const blob = new Blob([svg.toString()]);
         element.download = "qrcode.svg";
         element.href = window.URL.createObjectURL(blob);
-      } else if ('img' === this.tag) {
-        const img = document.querySelector('#qrcode img');
+      } else if ('img' === this.configTag) {
+        const img = this.$el.querySelector('img');
         const byteString = atob(img.src.split(',')[1]);
         const mimeString = img.src.split(',')[0].split(':')[1].split(';')[0];
         const ab = new ArrayBuffer(byteString.length);
@@ -5674,8 +5677,8 @@ var script = {
         });
         element.download = "qrcode.png";
         element.href = window.URL.createObjectURL(blob);
-      } else if ('canvas' === this.tag) {
-        let canvas = document.getElementById('canvas-qr-code');
+      } else if ('canvas' === this.configTag) {
+        let canvas = this.$el.querySelector('canvas');
         element.crossorigin = 'anonymous';
         element.href = canvas.toDataURL("image/png");
         element.download = 'qrcode.png';
@@ -5687,8 +5690,10 @@ var script = {
       this.canvasRefreshToken = Math.random();
     },
     onReady() {
-      if (!this.imageUrl) return;
-      let canvas = document.getElementById('canvas-qr-code');
+      if (!this.imageUrl) {
+        return false;
+      }
+      let canvas = this.$el.querySelector('canvas');
       const context = canvas.getContext('2d');
       const image = new Image();
       image.crossOrigin = 'Anonymous';
@@ -5879,17 +5884,16 @@ var __vue_render__ = function () {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('form', {
-    staticClass: "--quick-qr card"
+  return _c('div', {
+    class: ['--quick-qr', {
+      'card': _vm.ui === 'card'
+    }]
   }, [_c('div', {
-    staticClass: "card-body"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "d-flex justify-content-center",
-    attrs: {
-      "id": "qrcode"
+    class: {
+      'card-body': _vm.ui === 'card'
     }
+  }, [_c('div', {
+    staticClass: "d-flex justify-content-center"
   }, ['svg' === _vm.configTag ? _c('vue-qrcode', {
     attrs: {
       "options": _vm.options,
@@ -5905,7 +5909,6 @@ var __vue_render__ = function () {
   }) : _vm._e(), _vm._v(" "), 'canvas' === _vm.configTag ? _c('vue-qrcode', {
     key: _vm.canvasRefreshToken,
     attrs: {
-      "id": "canvas-qr-code",
       "options": _vm.options,
       "value": _vm.qRCodeData,
       "tag": "canvas"
@@ -5913,7 +5916,7 @@ var __vue_render__ = function () {
     on: {
       "ready": _vm.onReady
     }
-  }) : _vm._e()], 1)]), _vm._v(" "), _vm.showForm ? _c('div', [_c('div', {
+  }) : _vm._e()], 1), _vm._v(" "), _vm.showForm ? _c('div', [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -6364,14 +6367,14 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-fa47d430_0", {
-    source: ".--quick-qr canvas[data-v-fa47d430],.--quick-qr img[data-v-fa47d430],.--quick-qr svg[data-v-fa47d430]{display:block;max-width:100%!important;height:auto!important}",
+  inject("data-v-0c2ca261_0", {
+    source: ".--quick-qr canvas[data-v-0c2ca261],.--quick-qr img[data-v-0c2ca261],.--quick-qr svg[data-v-0c2ca261]{display:block;max-width:100%!important;height:auto!important}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__ = "data-v-fa47d430";
+const __vue_scope_id__ = "data-v-0c2ca261";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */

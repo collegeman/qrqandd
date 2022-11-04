@@ -5591,27 +5591,30 @@ var script = {
     showForm: {
       type: Boolean,
       default: false
+    },
+    showDownloadButton: {
+      type: Boolean,
+      default: false
+    },
+    ui: {
+      type: [String, Boolean],
+      default: false
     }
   },
   data: function data() {
     return {
-      color: {
-        dark: '000',
-        light: '0000'
-      },
       vcard: {},
       hasImage: 0,
       hasBgColor: 0,
       hasFgColor: 0,
       imageUrl: '',
       bgColor: {
-        hex: '#CCCCCC'
+        hex: '#0000'
       },
       fgColor: {
         hex: '#000'
       },
       canvasRefreshToken: Math.random(),
-      showDownloadButton: true,
       configTag: this.tag,
       config: {
         type: null,
@@ -5664,7 +5667,7 @@ var script = {
   },
   updated: function updated() {
     var _this = this;
-    if (this.tag === 'canvas' && this.imageUrl) {
+    if (this.configTag === 'canvas' && this.imageUrl) {
       setTimeout(function () {
         _this.onReady();
       }, 100);
@@ -5672,12 +5675,12 @@ var script = {
   },
   watch: {
     imageUrl: function imageUrl(newURL, oldURL) {
-      if (newURL && this.tag === 'canvas') {
+      if (newURL && this.configTag === 'canvas') {
         this.refreshTokenForCanvas();
       }
     },
     hasImage: function hasImage() {
-      if (this.tag === 'canvas') {
+      if (this.configTag === 'canvas') {
         this.refreshTokenForCanvas();
       }
     },
@@ -5695,13 +5698,13 @@ var script = {
   methods: {
     download: function download() {
       var element = document.createElement("a");
-      if ('svg' === this.tag) {
-        var svg = document.querySelector('#qrcode svg').outerHTML;
+      if ('svg' === this.configTag) {
+        var svg = this.$el.querySelector('svg').outerHTML;
         var blob = new Blob([svg.toString()]);
         element.download = "qrcode.svg";
         element.href = window.URL.createObjectURL(blob);
-      } else if ('img' === this.tag) {
-        var img = document.querySelector('#qrcode img');
+      } else if ('img' === this.configTag) {
+        var img = this.$el.querySelector('img');
         var byteString = atob(img.src.split(',')[1]);
         var mimeString = img.src.split(',')[0].split(':')[1].split(';')[0];
         var ab = new ArrayBuffer(byteString.length);
@@ -5714,8 +5717,8 @@ var script = {
         });
         element.download = "qrcode.png";
         element.href = window.URL.createObjectURL(_blob);
-      } else if ('canvas' === this.tag) {
-        var canvas = document.getElementById('canvas-qr-code');
+      } else if ('canvas' === this.configTag) {
+        var canvas = this.$el.querySelector('canvas');
         element.crossorigin = 'anonymous';
         element.href = canvas.toDataURL("image/png");
         element.download = 'qrcode.png';
@@ -5728,8 +5731,10 @@ var script = {
     },
     onReady: function onReady() {
       var _this2 = this;
-      if (!this.imageUrl) return;
-      var canvas = document.getElementById('canvas-qr-code');
+      if (!this.imageUrl) {
+        return false;
+      }
+      var canvas = this.$el.querySelector('canvas');
       var context = canvas.getContext('2d');
       var image = new Image();
       image.crossOrigin = 'Anonymous';
@@ -5904,9 +5909,13 @@ var __vue_render__ = function __vue_render__() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c('form', {
-    staticClass: "--quick-qr card"
-  }, [_vm._ssrNode("<div class=\"card-body\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<div id=\"qrcode\" class=\"d-flex justify-content-center\" data-v-fa47d430>", "</div>", ['svg' === _vm.configTag ? _c('vue-qrcode', {
+  return _c('div', {
+    class: ['--quick-qr', {
+      'card': _vm.ui === 'card'
+    }]
+  }, [_vm._ssrNode("<div" + _vm._ssrClass(null, {
+    'card-body': _vm.ui === 'card'
+  }) + " data-v-0c2ca261>", "</div>", [_vm._ssrNode("<div class=\"d-flex justify-content-center\" data-v-0c2ca261>", "</div>", ['svg' === _vm.configTag ? _c('vue-qrcode', {
     attrs: {
       "options": _vm.options,
       "value": _vm.qRCodeData,
@@ -5921,7 +5930,6 @@ var __vue_render__ = function __vue_render__() {
   }) : _vm._e(), _vm._ssrNode(" "), 'canvas' === _vm.configTag ? _c('vue-qrcode', {
     key: _vm.canvasRefreshToken,
     attrs: {
-      "id": "canvas-qr-code",
       "options": _vm.options,
       "value": _vm.qRCodeData,
       "tag": "canvas"
@@ -5929,7 +5937,7 @@ var __vue_render__ = function __vue_render__() {
     on: {
       "ready": _vm.onReady
     }
-  }) : _vm._e()], 2)]), _vm._ssrNode(" "), _vm.showForm ? _vm._ssrNode("<div data-v-fa47d430>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<label for=\"value-type\" data-v-fa47d430>\n          QR Code Type\n        </label> "), _c('select', {
+  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.showForm ? _vm._ssrNode("<div data-v-0c2ca261>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"value-type\" data-v-0c2ca261>\n          QR Code Type\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5959,7 +5967,7 @@ var __vue_render__ = function __vue_render__() {
     attrs: {
       "value": "vcard"
     }
-  }, [_vm._v("VCard")])])], 2), _vm._ssrNode(" " + (_vm.config.type === 'url' ? "<div class=\"form-group\" data-v-fa47d430><label for=\"value\" data-v-fa47d430>\n          QR Code Value\n        </label> <input id=\"value\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.url) + " class=\"form-control\" data-v-fa47d430></div>" : "<!---->") + " " + (_vm.config.type === 'vcard' ? "<div data-v-fa47d430><div class=\"form-group\" data-v-fa47d430><label for=\"name\" data-v-fa47d430>\n            Name\n          </label> <input id=\"name\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.name) + " class=\"form-control\" data-v-fa47d430></div> <div class=\"form-group\" data-v-fa47d430><label for=\"email\" data-v-fa47d430>\n            Email\n          </label> <input id=\"email\" type=\"email\"" + _vm._ssrAttr("value", _vm.config.email) + " class=\"form-control\" data-v-fa47d430></div> <div class=\"form-group\" data-v-fa47d430><label for=\"phone\" data-v-fa47d430>\n            Phone\n          </label> <input id=\"phone\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.phone) + " class=\"form-control\" data-v-fa47d430></div> <div class=\"form-group\" data-v-fa47d430><label for=\"website\" data-v-fa47d430>\n            Website\n          </label> <input id=\"website\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.website) + " class=\"form-control\" data-v-fa47d430></div> <div class=\"form-group\" data-v-fa47d430><label for=\"job-title\" data-v-fa47d430>\n            Job Title\n          </label> <input id=\"job-title\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.job_title) + " class=\"form-control\" data-v-fa47d430></div> <div class=\"form-group\" data-v-fa47d430><label for=\"company\" data-v-fa47d430>\n            Company\n          </label> <input id=\"company\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.company) + " class=\"form-control\" data-v-fa47d430></div></div>" : "<!---->") + " "), _vm._ssrNode("<div class=\"form-group\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<label for=\"tag\" data-v-fa47d430>\n          Image Type\n        </label> "), _c('select', {
+  }, [_vm._v("VCard")])])], 2), _vm._ssrNode(" " + (_vm.config.type === 'url' ? "<div class=\"form-group\" data-v-0c2ca261><label for=\"value\" data-v-0c2ca261>\n          QR Code Value\n        </label> <input id=\"value\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.url) + " class=\"form-control\" data-v-0c2ca261></div>" : "<!---->") + " " + (_vm.config.type === 'vcard' ? "<div data-v-0c2ca261><div class=\"form-group\" data-v-0c2ca261><label for=\"name\" data-v-0c2ca261>\n            Name\n          </label> <input id=\"name\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.name) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"email\" data-v-0c2ca261>\n            Email\n          </label> <input id=\"email\" type=\"email\"" + _vm._ssrAttr("value", _vm.config.email) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"phone\" data-v-0c2ca261>\n            Phone\n          </label> <input id=\"phone\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.phone) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"website\" data-v-0c2ca261>\n            Website\n          </label> <input id=\"website\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.website) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"job-title\" data-v-0c2ca261>\n            Job Title\n          </label> <input id=\"job-title\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.job_title) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"company\" data-v-0c2ca261>\n            Company\n          </label> <input id=\"company\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.company) + " class=\"form-control\" data-v-0c2ca261></div></div>" : "<!---->") + " "), _vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"tag\" data-v-0c2ca261>\n          Image Type\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5989,7 +5997,7 @@ var __vue_render__ = function __vue_render__() {
     attrs: {
       "value": "canvas"
     }
-  }, [_vm._v("Canvas")])])], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<label for=\"foreground-color\" data-v-fa47d430>\n          Foreground Color (Hex)\n        </label> "), _c('select', {
+  }, [_vm._v("Canvas")])])], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"foreground-color\" data-v-0c2ca261>\n          Foreground Color (Hex)\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6031,7 +6039,7 @@ var __vue_render__ = function __vue_render__() {
       },
       expression: "fgColor"
     }
-  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<label for=\"background-color\" data-v-fa47d430>\n          Background Color (Hex)\n        </label> "), _c('select', {
+  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"background-color\" data-v-0c2ca261>\n          Background Color (Hex)\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6073,7 +6081,7 @@ var __vue_render__ = function __vue_render__() {
       },
       expression: "bgColor"
     }
-  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.configTag === 'canvas' ? _vm._ssrNode("<div data-v-fa47d430>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-fa47d430>", "</div>", [_vm._ssrNode("<label for=\"image\" data-v-fa47d430>\n            Inset Image\n          </label> "), _c('select', {
+  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.configTag === 'canvas' ? _vm._ssrNode("<div data-v-0c2ca261>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"image\" data-v-0c2ca261>\n            Inset Image\n          </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6103,23 +6111,23 @@ var __vue_render__ = function __vue_render__() {
     domProps: {
       "value": 1
     }
-  }, [_vm._v("A URL to an Image")])])], 2), _vm._ssrNode(" " + (_vm.hasImage ? "<div class=\"form-group\" data-v-fa47d430><label for=\"image-url\" data-v-fa47d430>\n            Image URL\n          </label> <input id=\"image-url\" type=\"text\"" + _vm._ssrAttr("value", _vm.imageUrl) + " class=\"form-control\" data-v-fa47d430></div>" : "<!---->"))], 2) : _vm._e()], 2) : _vm._e(), _vm._ssrNode(" " + (_vm.showForm || _vm.showDownloadButton ? "<button class=\"btn btn-block btn-dark\" data-v-fa47d430>\n      Download\n    </button>" : "<!---->"))], 2)]);
+  }, [_vm._v("A URL to an Image")])])], 2), _vm._ssrNode(" " + (_vm.hasImage ? "<div class=\"form-group\" data-v-0c2ca261><label for=\"image-url\" data-v-0c2ca261>\n            Image URL\n          </label> <input id=\"image-url\" type=\"text\"" + _vm._ssrAttr("value", _vm.imageUrl) + " class=\"form-control\" data-v-0c2ca261></div>" : "<!---->"))], 2) : _vm._e()], 2) : _vm._e(), _vm._ssrNode(" " + (_vm.showForm || _vm.showDownloadButton ? "<button class=\"btn btn-block btn-dark\" data-v-0c2ca261>\n      Download\n    </button>" : "<!---->"))], 2)]);
 };
 var __vue_staticRenderFns__ = [];
 
 /* style */
 var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-fa47d430_0", {
-    source: ".--quick-qr canvas[data-v-fa47d430],.--quick-qr img[data-v-fa47d430],.--quick-qr svg[data-v-fa47d430]{display:block;max-width:100%!important;height:auto!important}",
+  inject("data-v-0c2ca261_0", {
+    source: ".--quick-qr canvas[data-v-0c2ca261],.--quick-qr img[data-v-0c2ca261],.--quick-qr svg[data-v-0c2ca261]{display:block;max-width:100%!important;height:auto!important}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-var __vue_scope_id__ = "data-v-fa47d430";
+var __vue_scope_id__ = "data-v-0c2ca261";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-fa47d430";
+var __vue_module_identifier__ = "data-v-0c2ca261";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject shadow dom */
