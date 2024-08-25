@@ -91,6 +91,64 @@
               type="text"
             >
           </div>
+          <fieldset>
+            <legend>Address</legend>
+            <div class="form-group">
+              <label for="line1">
+                Address Line 1
+              </label>
+              <input
+                id="line1"
+                v-model="config.address.line1"
+                class="form-control"
+                type="text"
+              >
+            </div>
+            <div class="form-group">
+              <label for="line1">
+                Address Line 2
+              </label>
+              <input
+                id="line1"
+                v-model="config.address.line2"
+                class="form-control"
+                type="text"
+              >
+            </div> 
+            <div class="form-group">
+              <label for="line1">
+                City
+              </label>
+              <input
+                id="line1"
+                v-model="config.address.city"
+                class="form-control"
+                type="text"
+              >
+            </div> 
+            <div class="form-group">
+              <label for="line1">
+                State
+              </label>
+              <input
+                id="state"
+                v-model="config.address.state"
+                class="form-control"
+                type="text"
+              >
+            </div> 
+            <div class="form-group">
+              <label for="zip">
+                Zip
+              </label>
+              <input
+                id="zip"
+                v-model="config.address.zip"
+                class="form-control"
+                type="text"
+              >
+            </div> 
+          </fieldset>
           <div class="form-group">
             <label for="website">
               Website
@@ -296,6 +354,13 @@
           job_title: null,
           company: null,
           website: null,
+          address: {
+            line1: null,
+            line2: null,
+            city: null,
+            state: null,
+            zip: null,
+          },
           phone: null
         }
       }
@@ -466,9 +531,11 @@
         if (this.config.website) {
           vcard.push("URL:" + this.config.website)
         }
-
         if (this.config.phone) {
           vcard.push("TEL:" + this.config.phone)
+        }
+        if (this.config.address.line1 || this.config.address.line2 || this.config.address.city || this.config.address.state || this.config.address.zip) {
+          vcard.push("ADR:" + this.config.address.line1 + ', ' this.config.address.line2 + ', ' + this.config.address.city + ', ' + this.config.address.state + ', ' + this.config.address.zip)
         }
         vcard.push("END:VCARD")
 
