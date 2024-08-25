@@ -361,7 +361,7 @@
             state: null,
             zip: null,
           },
-          phone: null
+          phone: null,
         }
       }
     },
@@ -535,7 +535,7 @@
           vcard.push("TEL:" + this.config.phone)
         }
         if (this.config.address.line1 || this.config.address.line2 || this.config.address.city || this.config.address.state || this.config.address.zip) {
-          vcard.push("ADR:" + this.config.address.line1 + ', ' this.config.address.line2 + ', ' + this.config.address.city + ', ' + this.config.address.state + ', ' + this.config.address.zip)
+          vcard.push("ADR:" + this.config.address.line1 + ', ' + this.config.address.line2 + ', ' + this.config.address.city + ', ' + this.config.address.state + ', ' + this.config.address.zip)
         }
         vcard.push("END:VCARD")
 

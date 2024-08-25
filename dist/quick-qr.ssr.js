@@ -5624,6 +5624,13 @@ var script = {
         job_title: null,
         company: null,
         website: null,
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         phone: null
       }
     };
@@ -5784,6 +5791,9 @@ var script = {
       if (this.config.phone) {
         vcard.push("TEL:" + this.config.phone);
       }
+      if (this.config.address.line1 || this.config.address.line2 || this.config.address.city || this.config.address.state || this.config.address.zip) {
+        vcard.push("ADR:" + this.config.address.line1 + ', ' + this.config.address.line2 + ', ' + this.config.address.city + ', ' + this.config.address.state + ', ' + this.config.address.zip);
+      }
       vcard.push("END:VCARD");
       return vcard.join("\n");
     }
@@ -5915,7 +5925,7 @@ var __vue_render__ = function __vue_render__() {
     }]
   }, [_vm._ssrNode("<div" + _vm._ssrClass(null, {
     'card-body': _vm.ui === 'card'
-  }) + " data-v-0c2ca261>", "</div>", [_vm._ssrNode("<div class=\"d-flex justify-content-center\" data-v-0c2ca261>", "</div>", ['svg' === _vm.configTag ? _c('vue-qrcode', {
+  }) + " data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<div class=\"d-flex justify-content-center\" data-v-63f7d0fc>", "</div>", ['svg' === _vm.configTag ? _c('vue-qrcode', {
     attrs: {
       "options": _vm.options,
       "value": _vm.qRCodeData,
@@ -5937,7 +5947,7 @@ var __vue_render__ = function __vue_render__() {
     on: {
       "ready": _vm.onReady
     }
-  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.showForm ? _vm._ssrNode("<div data-v-0c2ca261>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"value-type\" data-v-0c2ca261>\n          QR Code Type\n        </label> "), _c('select', {
+  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.showForm ? _vm._ssrNode("<div data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<label for=\"value-type\" data-v-63f7d0fc>\n          QR Code Type\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5967,7 +5977,7 @@ var __vue_render__ = function __vue_render__() {
     attrs: {
       "value": "vcard"
     }
-  }, [_vm._v("VCard")])])], 2), _vm._ssrNode(" " + (_vm.config.type === 'url' ? "<div class=\"form-group\" data-v-0c2ca261><label for=\"value\" data-v-0c2ca261>\n          QR Code Value\n        </label> <input id=\"value\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.url) + " class=\"form-control\" data-v-0c2ca261></div>" : "<!---->") + " " + (_vm.config.type === 'vcard' ? "<div data-v-0c2ca261><div class=\"form-group\" data-v-0c2ca261><label for=\"name\" data-v-0c2ca261>\n            Name\n          </label> <input id=\"name\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.name) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"email\" data-v-0c2ca261>\n            Email\n          </label> <input id=\"email\" type=\"email\"" + _vm._ssrAttr("value", _vm.config.email) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"phone\" data-v-0c2ca261>\n            Phone\n          </label> <input id=\"phone\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.phone) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"website\" data-v-0c2ca261>\n            Website\n          </label> <input id=\"website\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.website) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"job-title\" data-v-0c2ca261>\n            Job Title\n          </label> <input id=\"job-title\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.job_title) + " class=\"form-control\" data-v-0c2ca261></div> <div class=\"form-group\" data-v-0c2ca261><label for=\"company\" data-v-0c2ca261>\n            Company\n          </label> <input id=\"company\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.company) + " class=\"form-control\" data-v-0c2ca261></div></div>" : "<!---->") + " "), _vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"tag\" data-v-0c2ca261>\n          Image Type\n        </label> "), _c('select', {
+  }, [_vm._v("VCard")])])], 2), _vm._ssrNode(" " + (_vm.config.type === 'url' ? "<div class=\"form-group\" data-v-63f7d0fc><label for=\"value\" data-v-63f7d0fc>\n          QR Code Value\n        </label> <input id=\"value\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.url) + " class=\"form-control\" data-v-63f7d0fc></div>" : "<!---->") + " " + (_vm.config.type === 'vcard' ? "<div data-v-63f7d0fc><div class=\"form-group\" data-v-63f7d0fc><label for=\"name\" data-v-63f7d0fc>\n            Name\n          </label> <input id=\"name\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.name) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"email\" data-v-63f7d0fc>\n            Email\n          </label> <input id=\"email\" type=\"email\"" + _vm._ssrAttr("value", _vm.config.email) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"phone\" data-v-63f7d0fc>\n            Phone\n          </label> <input id=\"phone\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.phone) + " class=\"form-control\" data-v-63f7d0fc></div> <fieldset data-v-63f7d0fc><legend data-v-63f7d0fc>Address</legend> <div class=\"form-group\" data-v-63f7d0fc><label for=\"line1\" data-v-63f7d0fc>\n              Address Line 1\n            </label> <input id=\"line1\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.address.line1) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"line1\" data-v-63f7d0fc>\n              Address Line 2\n            </label> <input id=\"line1\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.address.line2) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"line1\" data-v-63f7d0fc>\n              City\n            </label> <input id=\"line1\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.address.city) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"line1\" data-v-63f7d0fc>\n              State\n            </label> <input id=\"state\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.address.state) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"zip\" data-v-63f7d0fc>\n              Zip\n            </label> <input id=\"zip\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.address.zip) + " class=\"form-control\" data-v-63f7d0fc></div></fieldset> <div class=\"form-group\" data-v-63f7d0fc><label for=\"website\" data-v-63f7d0fc>\n            Website\n          </label> <input id=\"website\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.website) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"job-title\" data-v-63f7d0fc>\n            Job Title\n          </label> <input id=\"job-title\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.job_title) + " class=\"form-control\" data-v-63f7d0fc></div> <div class=\"form-group\" data-v-63f7d0fc><label for=\"company\" data-v-63f7d0fc>\n            Company\n          </label> <input id=\"company\" type=\"text\"" + _vm._ssrAttr("value", _vm.config.company) + " class=\"form-control\" data-v-63f7d0fc></div></div>" : "<!---->") + " "), _vm._ssrNode("<div class=\"form-group\" data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<label for=\"tag\" data-v-63f7d0fc>\n          Image Type\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -5997,7 +6007,7 @@ var __vue_render__ = function __vue_render__() {
     attrs: {
       "value": "canvas"
     }
-  }, [_vm._v("Canvas")])])], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"foreground-color\" data-v-0c2ca261>\n          Foreground Color (Hex)\n        </label> "), _c('select', {
+  }, [_vm._v("Canvas")])])], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<label for=\"foreground-color\" data-v-63f7d0fc>\n          Foreground Color (Hex)\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6039,7 +6049,7 @@ var __vue_render__ = function __vue_render__() {
       },
       expression: "fgColor"
     }
-  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"background-color\" data-v-0c2ca261>\n          Background Color (Hex)\n        </label> "), _c('select', {
+  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm._ssrNode("<div class=\"form-group\" data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<label for=\"background-color\" data-v-63f7d0fc>\n          Background Color (Hex)\n        </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6081,7 +6091,7 @@ var __vue_render__ = function __vue_render__() {
       },
       expression: "bgColor"
     }
-  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.configTag === 'canvas' ? _vm._ssrNode("<div data-v-0c2ca261>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-0c2ca261>", "</div>", [_vm._ssrNode("<label for=\"image\" data-v-0c2ca261>\n            Inset Image\n          </label> "), _c('select', {
+  }) : _vm._e()], 2), _vm._ssrNode(" "), _vm.configTag === 'canvas' ? _vm._ssrNode("<div data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<div class=\"form-group\" data-v-63f7d0fc>", "</div>", [_vm._ssrNode("<label for=\"image\" data-v-63f7d0fc>\n            Inset Image\n          </label> "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6111,23 +6121,23 @@ var __vue_render__ = function __vue_render__() {
     domProps: {
       "value": 1
     }
-  }, [_vm._v("A URL to an Image")])])], 2), _vm._ssrNode(" " + (_vm.hasImage ? "<div class=\"form-group\" data-v-0c2ca261><label for=\"image-url\" data-v-0c2ca261>\n            Image URL\n          </label> <input id=\"image-url\" type=\"text\"" + _vm._ssrAttr("value", _vm.imageUrl) + " class=\"form-control\" data-v-0c2ca261></div>" : "<!---->"))], 2) : _vm._e()], 2) : _vm._e(), _vm._ssrNode(" " + (_vm.showForm || _vm.showDownloadButton ? "<button class=\"btn btn-block btn-dark\" data-v-0c2ca261>\n      Download\n    </button>" : "<!---->"))], 2)]);
+  }, [_vm._v("A URL to an Image")])])], 2), _vm._ssrNode(" " + (_vm.hasImage ? "<div class=\"form-group\" data-v-63f7d0fc><label for=\"image-url\" data-v-63f7d0fc>\n            Image URL\n          </label> <input id=\"image-url\" type=\"text\"" + _vm._ssrAttr("value", _vm.imageUrl) + " class=\"form-control\" data-v-63f7d0fc></div>" : "<!---->"))], 2) : _vm._e()], 2) : _vm._e(), _vm._ssrNode(" " + (_vm.showForm || _vm.showDownloadButton ? "<button class=\"btn btn-block btn-dark\" data-v-63f7d0fc>\n      Download\n    </button>" : "<!---->"))], 2)]);
 };
 var __vue_staticRenderFns__ = [];
 
 /* style */
 var __vue_inject_styles__ = function __vue_inject_styles__(inject) {
   if (!inject) return;
-  inject("data-v-0c2ca261_0", {
-    source: ".--quick-qr canvas[data-v-0c2ca261],.--quick-qr img[data-v-0c2ca261],.--quick-qr svg[data-v-0c2ca261]{display:block;max-width:100%!important;height:auto!important}",
+  inject("data-v-63f7d0fc_0", {
+    source: ".--quick-qr canvas[data-v-63f7d0fc],.--quick-qr img[data-v-63f7d0fc],.--quick-qr svg[data-v-63f7d0fc]{display:block;max-width:100%!important;height:auto!important}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-var __vue_scope_id__ = "data-v-0c2ca261";
+var __vue_scope_id__ = "data-v-63f7d0fc";
 /* module identifier */
-var __vue_module_identifier__ = "data-v-0c2ca261";
+var __vue_module_identifier__ = "data-v-63f7d0fc";
 /* functional template */
 var __vue_is_functional_template__ = false;
 /* style inject shadow dom */

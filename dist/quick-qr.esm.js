@@ -5585,6 +5585,13 @@ var script = {
         job_title: null,
         company: null,
         website: null,
+        address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null
+        },
         phone: null
       }
     };
@@ -5741,6 +5748,9 @@ var script = {
       }
       if (this.config.phone) {
         vcard.push("TEL:" + this.config.phone);
+      }
+      if (this.config.address.line1 || this.config.address.line2 || this.config.address.city || this.config.address.state || this.config.address.zip) {
+        vcard.push("ADR:" + this.config.address.line1 + ', ' + this.config.address.line2 + ', ' + this.config.address.city + ', ' + this.config.address.state + ', ' + this.config.address.zip);
       }
       vcard.push("END:VCARD");
       return vcard.join("\n");
@@ -6068,7 +6078,152 @@ var __vue_render__ = function () {
         _vm.$set(_vm.config, "phone", $event.target.value);
       }
     }
+  })]), _vm._v(" "), _c('fieldset', [_c('legend', [_vm._v("Address")]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "line1"
+    }
+  }, [_vm._v("\n              Address Line 1\n            ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.config.address.line1,
+      expression: "config.address.line1"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "line1",
+      "type": "text"
+    },
+    domProps: {
+      "value": _vm.config.address.line1
+    },
+    on: {
+      "input": function ($event) {
+        if ($event.target.composing) {
+          return;
+        }
+        _vm.$set(_vm.config.address, "line1", $event.target.value);
+      }
+    }
   })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "line1"
+    }
+  }, [_vm._v("\n              Address Line 2\n            ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.config.address.line2,
+      expression: "config.address.line2"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "line1",
+      "type": "text"
+    },
+    domProps: {
+      "value": _vm.config.address.line2
+    },
+    on: {
+      "input": function ($event) {
+        if ($event.target.composing) {
+          return;
+        }
+        _vm.$set(_vm.config.address, "line2", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "line1"
+    }
+  }, [_vm._v("\n              City\n            ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.config.address.city,
+      expression: "config.address.city"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "line1",
+      "type": "text"
+    },
+    domProps: {
+      "value": _vm.config.address.city
+    },
+    on: {
+      "input": function ($event) {
+        if ($event.target.composing) {
+          return;
+        }
+        _vm.$set(_vm.config.address, "city", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "line1"
+    }
+  }, [_vm._v("\n              State\n            ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.config.address.state,
+      expression: "config.address.state"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "state",
+      "type": "text"
+    },
+    domProps: {
+      "value": _vm.config.address.state
+    },
+    on: {
+      "input": function ($event) {
+        if ($event.target.composing) {
+          return;
+        }
+        _vm.$set(_vm.config.address, "state", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "zip"
+    }
+  }, [_vm._v("\n              Zip\n            ")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.config.address.zip,
+      expression: "config.address.zip"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "id": "zip",
+      "type": "text"
+    },
+    domProps: {
+      "value": _vm.config.address.zip
+    },
+    on: {
+      "input": function ($event) {
+        if ($event.target.composing) {
+          return;
+        }
+        _vm.$set(_vm.config.address, "zip", $event.target.value);
+      }
+    }
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -6367,14 +6522,14 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-0c2ca261_0", {
-    source: ".--quick-qr canvas[data-v-0c2ca261],.--quick-qr img[data-v-0c2ca261],.--quick-qr svg[data-v-0c2ca261]{display:block;max-width:100%!important;height:auto!important}",
+  inject("data-v-63f7d0fc_0", {
+    source: ".--quick-qr canvas[data-v-63f7d0fc],.--quick-qr img[data-v-63f7d0fc],.--quick-qr svg[data-v-63f7d0fc]{display:block;max-width:100%!important;height:auto!important}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__ = "data-v-0c2ca261";
+const __vue_scope_id__ = "data-v-63f7d0fc";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
