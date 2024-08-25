@@ -34,7 +34,13 @@
       <quick-qr
         background-color="#0000"
         foreground-color="#000"
-        :value="{ type: 'url', url: 'https://makeqrcode.dev' }"
+        :value="{ type: 'url', url: 'https://makeqrcode.dev', address: {
+          line1: null,
+          line2: null,
+          city: null,
+          state: null,
+          zip: null,
+        }}"
         tag="canvas"
         image="https://picsum.photos/200/300"
         ui="card"
