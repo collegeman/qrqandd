@@ -6111,7 +6111,7 @@ var __vue_render__ = function () {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
-      "for": "line1"
+      "for": "line2"
     }
   }, [_vm._v("\n              Address Line 2\n            ")]), _vm._v(" "), _c('input', {
     directives: [{
@@ -6122,7 +6122,7 @@ var __vue_render__ = function () {
     }],
     staticClass: "form-control",
     attrs: {
-      "id": "line1",
+      "id": "line2",
       "type": "text"
     },
     domProps: {
@@ -6522,14 +6522,14 @@ var __vue_staticRenderFns__ = [];
 /* style */
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-63f7d0fc_0", {
-    source: ".--quick-qr canvas[data-v-63f7d0fc],.--quick-qr img[data-v-63f7d0fc],.--quick-qr svg[data-v-63f7d0fc]{display:block;max-width:100%!important;height:auto!important}",
+  inject("data-v-31b247c8_0", {
+    source: ".--quick-qr canvas[data-v-31b247c8],.--quick-qr img[data-v-31b247c8],.--quick-qr svg[data-v-31b247c8]{display:block;max-width:100%!important;height:auto!important}",
     map: undefined,
     media: undefined
   });
 };
 /* scoped */
-const __vue_scope_id__ = "data-v-63f7d0fc";
+const __vue_scope_id__ = "data-v-31b247c8";
 /* module identifier */
 const __vue_module_identifier__ = undefined;
 /* functional template */
