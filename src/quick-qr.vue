@@ -105,11 +105,11 @@
               >
             </div>
             <div class="form-group">
-              <label for="line1">
+              <label for="line2">
                 Address Line 2
               </label>
               <input
-                id="line1"
+                id="line2"
                 v-model="config.address.line2"
                 class="form-control"
                 type="text"
